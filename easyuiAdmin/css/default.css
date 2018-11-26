@@ -1,0 +1,29 @@
+﻿*{font-size:12px; font-family:'Tahoma,Verdana,微软雅黑,新宋体'}
+a{ color:Black; text-decoration:none;}
+a:hover{ color:Red; text-decoration:underline;}
+.textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
+
+.txt01{font:Verdana, Geneva, sans-serif,宋体;padding:3px 2px 2px 2px; border-width:1px; border-color:#ddd;  color:#000;}
+.txt {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
+.footer{text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
+
+.head a{color:White;text-decoration:underline;}
+.easyui-accordion ul{list-style-type:none;margin:0px; padding:10px 0;}
+.easyui-accordion ul li{ padding:0px;}
+.easyui-accordion ul li a{line-height:24px;display: block;text-decoration: none}
+.easyui-accordion ul li div{margin:2px 0px;padding-left:20px;padding-top:2px;}
+.easyui-accordion ul li div.hover{ background:#e0ffed;cursor:pointer;}
+.easyui-accordion ul li div.hover a{color:#333;}
+.easyui-accordion ul li div.selected{background:#e0ffed;cursor:default;}
+.easyui-accordion ul li div.selected a{color:#41a369; font-weight:bold;display: block}
+.accordion-header-selected .fa{color:#fff}
+.fa{margin-top: -6px;}
+.panel-title{color:#333;font-size:13px;}
+
+/*导航*/
+
+.panel-htop .accordion-header-selected
+
+#west{
+    background-color: #2f4050;
+}
