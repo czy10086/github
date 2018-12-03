@@ -49,6 +49,7 @@ $(function () {
     $("#customList").datagrid({
         url:genAPI('settings/customerList'),
         method:'post',
+        idField:'id',
         fitColumns:true,
         striped:true,
         nowrap:true,
@@ -78,20 +79,17 @@ $(function () {
             text:'添加',
             iconCls:'fa fa-plus fa-lg',
             handler:function(){
-                var editRow = undefined;
                 $('#editTab').datagrid({
                     rownumbers : true,
+                    singleSelect:true,
+                    idField:'id',
                     columns:[[
                         { field:'contact',
                             title:'联系人',
                             width : 100,
                             hidden:false,
                             editor : {
-                                type : "validatebox",
-                                options : {
-                                    required : true,
-                                    validType:"contact"
-                                }
+                                type : "validatebox"
                             }
                          },
                         { field:'mobile',
@@ -99,11 +97,7 @@ $(function () {
                             width : 100,
                             hidden:false,
                             editor : {
-                                type : "validatebox",
-                                options : {
-                                    required : true,
-                                    validType:"contact"
-                                }
+                                type : "validatebox"
                             }
                          },
                         { field:'phone',
@@ -111,11 +105,7 @@ $(function () {
                             width : 100,
                             hidden:false,
                             editor : {
-                                type : "validatebox",
-                                options : {
-                                    required : true,
-                                    validType:"contact"
-                                }
+                                type : "validatebox"
                             }
                         },
                         { field:'mi',
@@ -123,63 +113,43 @@ $(function () {
                             width : 100,
                             hidden:false,
                             editor : {
-                                type : "validatebox",
-                                options : {
-                                    required : true,
-                                    validType:"contact"
-                                }
+                                type : "validatebox"
                             }
                         },
                         { field:'address',
                             title:'联系地址',
                             width : 100,
                             hidden:false,
+                            formatter:function () {
+                              /*  $(".addressDialog .easyui-searchbox .searchbox-f .textbox-f").on("click",function () {
+                                    alert(1);
+                                    console.info(000)
+                                })*/
+                            },
                             editor : {
-                                type : "validatebox",
-                                options : {
-                                    required : true,
-                                    validType:"contact"
-                                }
+                                type : "searchbox"
                             }
                          },
-                        { field:'contact',
+                        { field:'first',
                             title:'首要联系人',
                             width : 100,
                             hidden:false,
                             editor : {
-                                type : "validatebox",
-                                options : {
-                                    required : true,
-                                    validType:"contact"
-                                }
+                                type : "validatebox"
                             }
                         }
                     ]],
+                    lastFieldFun: function (dg, index, field) {
+                        console.info(index, field);
+                        $('#editTab').datagrid('append', {});
+                    },
                     toolbar:[{
                         id:'addEdit',
                         iconCls:'fa fa-plus fa-flg',
                         handler:function () {
-                            if (editRow != undefined) {
-                                $("#editTab").datagrid('endEdit', editRow);
-                            }
-                            if (editRow == undefined) {
-                                $("#editTab").datagrid('insertRow', {
-                                    index: 0,
-                                    row: {}
-                                });
-                                $("#editTab").datagrid('beginEdit', 0);
-                                editRow = 0;
-                                $('.datagrid-editable .textbox,.datagrid-editable .datagrid-editable-input,.datagrid-editable .textbox-text').bind('keydown', function(e){
-                                    console.log(e)
-                                     var code = e.keyCode || e.which;
-                                     if(code == 13) {
+                            $('#editTab').datagrid('append', {});
 
 
-                                     }
-                                });
-
-
-                            }
                         }
                     },'-', {
                         text: '删除',
@@ -187,36 +157,29 @@ $(function () {
                             var row = $("#editTab").datagrid('getSelections');
 
                             if(row.length>0) {
-                                layer.confirm('你确定要删除所选记录吗？', {
+                                var index = layer.confirm('你确定要删除所选记录吗？', {
                                         skin: 'layui-layer-molv',
                                         btn: ['确定', '取消'] //按钮
                                     }, function (target) {
                                         if (target) {
-                                            var ids = [];
-                                            for (i = 0; i < row.length; i++) {
-                                                ids.push(row[i].id);
-                                            }
-                                            console.info(ids);
-                                            console.info(ids.join(','))
+                                            $('#editTab').datagrid('removeit');
+                                            layer.close(index);
                                         }
                                     }, function (index) {
                                         layer.close(index)
                                     });
                             }
 
-                            if (editRow == undefined){return}
-                            $('#editTab').datagrid('cancelEdit', editRow)
-                                .datagrid('deleteRow', editRow);
-                            editRow = undefined;
                         }
                     }],
                     onBeforeEdit: function (rowIndex, rowData) {
+                        $('#editTab').datagrid('getColumnOption',rowIndex);
 
-                    },
+                    }
+
+                }).datagrid('enableCellEditing');
 
 
-
-                });
                 layer.open({
                     type: 1,
                     skin: 'layui-layer-molv', //加上边框
@@ -266,23 +229,30 @@ $(function () {
             }
         }]
     })
+
+
 });
 
-//新增数据
-function endEditing(){
-    if (editRow == undefined){return true}
-    if ($('#dg').datagrid('validateRow', editRow)){
-        $('#dg').datagrid('endEdit', editRow);
-        editRow = undefined;
-        return true;
-    } else {
-        return false;
-    }
-}
-function onClickCell(index, field){
-    if (endEditing()){
-        $('#dg').datagrid('selectRow', index)
-            .datagrid('editCell', {index:index,field:field});
-        editRow = index;
-    }
+function doDialog(value,name){
+    $(this).next().children().children().css({"text-decoration":"none","outline":"none"});
+   // alert('You input: ' + value+'('+name+')');
+    $.ajax({
+        type:"post",
+        url:"",
+        
+    })
+    layer.open({
+        type: 1,
+        skin: 'layui-layer-molv', //加上边框
+        area: ['680px', '288px'], //宽高
+        content: $('#addressDialog')
+        ,btn: ['保存', '取消']
+        ,yes: function(index, layero){
+
+            layer.close(index);
+        }
+        ,btn2: function(index, layero){
+            layer.close(index);
+        }
+    })
 }
