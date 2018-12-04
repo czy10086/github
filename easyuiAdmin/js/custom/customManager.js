@@ -235,24 +235,102 @@ $(function () {
 
 function doDialog(value,name){
     $(this).next().children().children().css({"text-decoration":"none","outline":"none"});
-   // alert('You input: ' + value+'('+name+')');
-    $.ajax({
-        type:"post",
-        url:"",
-        
-    })
+
+    openSelectAddress(value);
+
     layer.open({
         type: 1,
         skin: 'layui-layer-molv', //加上边框
-        area: ['680px', '288px'], //宽高
+        area: ['600px', '388px'], //宽高
         content: $('#addressDialog')
         ,btn: ['保存', '取消']
         ,yes: function(index, layero){
 
             layer.close(index);
+            $('#ss').searchbox('setValue', value);
         }
         ,btn2: function(index, layero){
             layer.close(index);
         }
     })
 }
+
+function openSelectAddress(){ //打开地址
+    var address = $("#province").val()+$("#city").val()+$("#district").val();
+    console.info(address);
+    var url = genAPI('settings/district');
+    $.post(url,{ key: "0" }, function(result) {
+        $("#province").combobox({
+            data : result.data,
+            valueField:'id',
+            textField:'fullname',
+            cache:false,
+            editable:false, //只读
+            onSelect:function(record){
+                var provinceId = record.id;
+                if(record.cidx){
+                    $.post(url,{key: "1",start:record.cidx[0],end:record.cidx[1]}, function(result) { //二级联动
+                        $("#city").combobox({
+                            data : result.data,
+                            valueField:'id',
+                            textField:'fullname',
+                            cache:false,
+                            editable:false,
+                            onLoadSuccess: function (){ //加载完成后,设置选中的项
+                                $("#city").combobox('select',$("#city").val());
+                            },
+                            onSelect:function(record){
+                                if(record.cidx){
+                                    $.post(url,{key: "2",start:record.cidx[0],end:record.cidx[1]}, function(result) { //三级联动
+                                        $("#district").combobox({
+                                            data : result.data,
+                                            valueField:'id',
+                                            textField:'fullname',
+                                            cache:false,
+                                            editable:false,
+                                            onLoadSuccess: function () { //加载完成后,设置选中的项
+                                                $("#district").combobox('select',$("#district").val());
+                                            },
+                                            onSelect:function (record) {
+                                               // console.info(result.data)
+
+                                            }
+                                        });
+                                        $('#district').combobox('clear');
+                                    },'json');
+                                }else{
+                                    $("#city").combobox('select',record.name)
+                                }
+                                $('#district').combobox('clear');
+                                $('#district').combobox('setValue','');
+                            }
+                        });
+                    },'json');
+                }else {
+                    $("#city").combobox('select',record.name);
+                }
+
+                $('#city').combobox('clear');
+                $('#city').combobox('setValue','');
+                $('#district').combobox('clear');
+                $('#district').combobox('setValue','');
+                $('#district').combobox('loadData',[]);
+            },
+            onLoadSuccess: function () { //加载完成后,设置选中的项
+                /*for (var i = 0;i<result.data.length;i++){
+                    if (result.data[i].id == provinceId) {
+                        $(this).combobox("select",provinceId);
+                    }
+                }*/
+                $("#province").combobox('select',$("#province").val());
+            },
+        });
+    },'json');
+}
+
+
+
+
+
+
+
