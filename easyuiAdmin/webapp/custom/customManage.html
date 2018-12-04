@@ -39,6 +39,9 @@
             color:#333
         }
         .textbox-addon{z-index:999999999}
+        .form-group{
+            margin:10px 0;
+        }
     </style>
 
 </head>
@@ -138,47 +141,34 @@
 </div>
 <div id="addressDialog">
     <div class="wrapper-content">
-        <form class="form-horizontal">
-            <div class="col-sm-6">
+        <form class="form-horizontal clearfix">
+            <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">省</label>
                     <div class="col-sm-9">
-                        <select class="form-control">
-                            <option>111</option>
-                            <option>111</option>
-                            <option>111</option>
-                        </select>
+                        <input id="province" type="text" class="easyui-combobox form-control" style="width:300px"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">市</label>
                     <div class="col-sm-9">
-                        <select class="form-control">
-                            <option>111</option>
-                            <option>111</option>
-                            <option>111</option>
-                        </select>
+                        <input id="city" type="text" class="easyui-combobox form-control" style="width:300px"/>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">区</label>
                     <div class="col-sm-9">
-                        <select class="form-control">
-                            <option>111</option>
-                            <option>111</option>
-                            <option>111</option>
-                        </select>
+                        <input id="district" type="text" class="easyui-combobox form-control" style="width:300px"/>
                     </div>
                 </div>
             </div>
-            <br/>
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">详细地址</label>
                     <div class="col-sm-9">
-                        <input class="form-control"/>
+                        <input class="form-control" style="width:300px"/>
                     </div>
                 </div>
             </div>
