@@ -45,6 +45,7 @@ $(function () {
 
     });
 
+    var newRow=true;
 
     $("#customList").datagrid({
         url:genAPI('settings/customerList'),
@@ -128,9 +129,22 @@ $(function () {
                                     onClickButton:function () {
                                         var dd = $(this);
 
-                                        var value = $("#province").combobox('getText')+","+$("#city").combobox('getText')+","+$("#district").combobox('getText')+","+ $("#detailDistrict").val();
 
+                                        var value;
+                                        if(newRow){
+                                            $("#province").combobox('setValue',"");
+                                            $("#city").combobox('setValue',"");
+                                            $("#district").combobox('setValue',"");
+                                            $("#detailDistrict").val('')
+                                        }else{
+                                            // value = $("#province").combobox('getText')+","+$("#city").combobox('getText')+","+$("#district").combobox('getText')+","+ $("#detailDistrict").val();
+                                            value=$(dd).parent().parent().attr("title");
+                                            alert(value);
+                                        }
+                                        alert(newRow);
+                                       //alert(value);
                                         openSelectAddress(value);
+
                                         layer.open({
                                             type: 1,
                                             skin: 'layui-layer-molv', //加上边框
@@ -139,7 +153,14 @@ $(function () {
                                             ,btn: ['保存', '取消']
                                             ,yes: function(index, layero){
                                                 layer.close(index);
+                                                var value = $("#province").combobox('getText')+
+                                                    $("#city").combobox('getText')+$("#district").combobox('getText')+ $("#detailDistrict").val();
+
+                                                var valueTitle = $("#province").combobox('getText')+","+$("#city").combobox('getText')+","+$("#district").combobox('getText')+","+ $("#detailDistrict").val();
+
+                                                $(dd).parent().parent().attr("title",valueTitle);
                                                 dd.textbox('setValue',value);
+                                                newRow=false;
                                             }
                                             ,btn2: function(index, layero){
                                                 layer.close(index);
@@ -159,18 +180,20 @@ $(function () {
                             editor : {
                                 type : "validatebox"
                             }
-                        }
+                        },
+
                     ]],
                     lastFieldFun: function (dg, index, field) {
                         console.info(index, field);
                         $('#editTab').datagrid('append', {});
+
                     },
                     toolbar:[{
                         id:'addEdit',
                         iconCls:'fa fa-plus fa-flg',
                         handler:function () {
                             $('#editTab').datagrid('append', {});
-
+                            newRow=true;
 
                         }
                     },'-', {
