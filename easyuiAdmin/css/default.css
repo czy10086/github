@@ -2,7 +2,7 @@
 a{ color:Black; text-decoration:none;}
 a:hover{ color:Red; text-decoration:underline;}
 .textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
-
+.panel-body{padding:0}
 .txt01{font:Verdana, Geneva, sans-serif,宋体;padding:3px 2px 2px 2px; border-width:1px; border-color:#ddd;  color:#000;}
 .txt {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
 .footer{text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
@@ -19,11 +19,51 @@ a:hover{ color:Red; text-decoration:underline;}
 .accordion-header-selected .fa{color:#fff}
 .fa{margin-top: -6px;}
 .panel-title{color:#333;font-size:13px;}
-
 /*导航*/
-
-.panel-htop .accordion-header-selected
 
 #west{
     background-color: #2f4050;
 }
+.datagrid-btn-separator{border:none}
+/*toolbar*/
+.datagrid-toolbar{
+    padding:5px;
+}
+.datagrid-toolbar a{
+    background: #1ab394;
+    color:#fff;
+}
+/* navTab */
+.navTab{
+    width:100%;
+    height:45px;
+    line-height:45px;
+    background-color: #f7f7f7;
+}
+.navTab ul{padding:0}
+.navTab ul li{
+    padding:0 10px;
+    float: left;
+    display: inline-block;
+}
+.navTab ul li a{
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0 10px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+}
+.navTab ul li.active{
+    background-color: #fff;
+}
+.navTab ul li.active a{
+    color:#1ab394;
+}
+
+
+.layui-layer-molv .layui-layer-btn .layui-layer-btn1{
+    background-color: #fff!important;
+}
+

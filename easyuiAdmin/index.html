@@ -68,15 +68,30 @@
         });
 
         function logout() {
-            $.messager.confirm('提示', '确定要退出吗?', function (r) {
+            /*$.messager.confirm('提示', '确定要退出吗?', function (r) {
                 if (r) {
                     $.messager.progress({
                         text: '正在退出中...'
                     });
                     window.location.href = './login.html' + location.search;
                 }
+            });*/
+            layer.confirm('确定要退出吗？', {
+                skin: 'layui-layer-molv',
+                btn: ['确定','取消'] //按钮
+            }, function(r){
+                if (r) {
+                    layer.load(1, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+                    /*$.messager.progress({
+                        text: '正在退出中...'
+                    });*/
+                    window.location.href = './login.html' + location.search;
+                }
+            }, function(index){
+                layer.close(index)
             });
-
         }
 	</script>
 

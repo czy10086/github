@@ -120,14 +120,36 @@ $(function () {
                             title:'联系地址',
                             width : 100,
                             hidden:false,
-                            formatter:function () {
-                              /*  $(".addressDialog .easyui-searchbox .searchbox-f .textbox-f").on("click",function () {
-                                    alert(1);
-                                    console.info(000)
-                                })*/
-                            },
                             editor : {
-                                type : "searchbox"
+                                type : "textbox",
+                                options:{
+                                    buttonIcon:'fa fa-ellipsis-h fa-lg',
+                                    buttonAlign:'right',
+                                    onClickButton:function () {
+                                        var dd = $(this);
+
+                                        var value = $("#province").combobox('getText')+","+$("#city").combobox('getText')+","+$("#district").combobox('getText')+","+ $("#detailDistrict").val();
+
+                                        openSelectAddress(value);
+                                        layer.open({
+                                            type: 1,
+                                            skin: 'layui-layer-molv', //加上边框
+                                            area: ['600px', '388px'], //宽高
+                                            content: $('#addressDialog')
+                                            ,btn: ['保存', '取消']
+                                            ,yes: function(index, layero){
+                                                layer.close(index);
+                                                dd.textbox('setValue',value);
+                                            }
+                                            ,btn2: function(index, layero){
+                                                layer.close(index);
+                                            }
+                                        });
+
+
+                                    }
+
+                                }
                             }
                          },
                         { field:'first',
@@ -169,17 +191,13 @@ $(function () {
                                         layer.close(index)
                                     });
                             }
-
                         }
                     }],
                     onBeforeEdit: function (rowIndex, rowData) {
                         $('#editTab').datagrid('getColumnOption',rowIndex);
-
                     }
 
                 }).datagrid('enableCellEditing');
-
-
                 layer.open({
                     type: 1,
                     skin: 'layui-layer-molv', //加上边框
@@ -200,7 +218,6 @@ $(function () {
             text:'修改',
             iconCls:'fa fa-pencil-square-o fa-lg',
             handler:function(){
-
 
             }
         },'-',{
@@ -233,33 +250,80 @@ $(function () {
 
 });
 
-function doDialog(value,name){
-    $(this).next().children().children().css({"text-decoration":"none","outline":"none"});
-
-    openSelectAddress(value);
-
-    layer.open({
-        type: 1,
-        skin: 'layui-layer-molv', //加上边框
-        area: ['600px', '388px'], //宽高
-        content: $('#addressDialog')
-        ,btn: ['保存', '取消']
-        ,yes: function(index, layero){
-
-            layer.close(index);
-            $('#ss').searchbox('setValue', value);
-        }
-        ,btn2: function(index, layero){
-            layer.close(index);
-        }
-    })
-}
-
-function openSelectAddress(){ //打开地址
-    var address = $("#province").val()+$("#city").val()+$("#district").val();
-    console.info(address);
+function openSelectAddress(value){ //打开地址
+    var ids;
+    if (value){
+        ids = value.split(',');
+    }
     var url = genAPI('settings/district');
-    $.post(url,{ key: "0" }, function(result) {
+    // 省
+    $("#province").combobox({
+        url: url+"?key=0",
+        // queryParams: {key:0},
+        valueField: 'id',
+        textField: 'fullname',
+        cache: false,
+        editable: false, //只读
+        loadFilter:function (res) {
+            return res.data
+        },
+        onSelect:function(record){
+            if(record.cidx){
+                $('#city').combobox('reload',url+"?key=1&start="+record.cidx[0]+"&end="+record.cidx[1]);
+            }
+            $('#city').combobox('clear');
+            $('#city').combobox('setValue','');
+            $('#district').combobox('clear');
+            $('#district').combobox('setValue','');
+
+        },
+        onLoadSuccess: function () {
+            if(ids && ids[0]){
+                $("#province").combobox("select", ids[0]);
+            }
+        }
+    });
+    $("#city").combobox({
+        valueField: 'id',
+        textField: 'fullname',
+        cache: false,
+        editable: false,
+        loadFilter:function (res) {
+            return res.data
+        },
+        onSelect:function(record){
+            if(record.cidx){
+                $('#district').combobox('reload',url+"?key=2&start="+record.cidx[0]+"&end="+record.cidx[1]);
+            }
+            $('#district').combobox('clear');
+            $('#district').combobox('setValue','');
+        },
+        onLoadSuccess: function () {
+            if(ids && ids[1]){
+                $("#city").combobox("select", ids[1]);
+            }
+        }
+    });
+    $("#district").combobox({
+        valueField: 'id',
+        textField: 'fullname',
+        cache: false,
+        editable: false,
+        loadFilter:function (res) {
+            return res.data
+        },
+        onLoadSuccess: function () {
+            if(ids && ids[2]){
+                $("#district").combobox("select", ids[2]);
+            }
+        }
+    });
+
+
+  //  var address = $("#province").val()+$("#city").val()+$("#district").val();
+   // console.info(address);
+    //var url = genAPI('settings/district');
+  /*$.post(url,{ key: "0" }, function(result) {
         $("#province").combobox({
             data : result.data,
             valueField:'id',
@@ -317,15 +381,15 @@ function openSelectAddress(){ //打开地址
                 $('#district').combobox('loadData',[]);
             },
             onLoadSuccess: function () { //加载完成后,设置选中的项
-                /*for (var i = 0;i<result.data.length;i++){
-                    if (result.data[i].id == provinceId) {
-                        $(this).combobox("select",provinceId);
+                for (var i = 0;i<result.data.length;i++){
+                    if (result.data[i].id == $("#province").val()) {
+                        $(this).combobox("select",$("#province").val());
                     }
-                }*/
-                $("#province").combobox('select',$("#province").val());
+                }
+                //$("#province").combobox('select',$("#province").val());
             },
         });
-    },'json');
+    },'json');*/
 }
 
 
