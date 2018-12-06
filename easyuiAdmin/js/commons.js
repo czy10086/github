@@ -67,7 +67,7 @@ $(function () {
                     }
                    // target.bind('keydown', function(e){
                     $('.datagrid-editable .textbox,.datagrid-editable .datagrid-editable-input,.datagrid-editable .textbox-text').bind('keydown', function(e){
-                        console.info(ed.target);
+                        //console.info(ed.target);
                         var code = e.keyCode || e.which;
                         var opts = dg.datagrid('options');
                         if(code == 13) {
@@ -83,6 +83,11 @@ $(function () {
                         }
                     });
 
+                }else{
+                    var target = $(ed.target);
+                    target.blur();
+                    target.datagrid('acceptChanges');
+                    target.datagrid('endEdit', opts.editIndex);
                 }
                 for(var i=0; i<fields.length; i++){
                     var col = dg.datagrid('getColumnOption', fields[i]);
