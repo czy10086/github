@@ -44,7 +44,7 @@ $(function () {
         }
 
     });
-    var newRow = true;
+
     $("#customList").datagrid({
         url:genAPI('settings/customerList'),
         method:'post',
@@ -82,6 +82,7 @@ $(function () {
                 $('#editTab').datagrid({
                     rownumbers : true,
                     singleSelect:true,
+                    pagination:false,
                     idField:'id',
                     columns:[[
                         { field:'name',
@@ -149,12 +150,10 @@ $(function () {
                             width : 100,
                             hidden:false,
                             formatter: function(value,row,index){
-
-                            var address = row.provinceName + row.cityName + row.districtName;
-                            if(address){
-                                return address;
-                            }
-
+                                var address = row.provinceName + row.cityName + row.districtName;
+                                if(address){
+                                    return address;
+                                }
                             },
                             editor : {
                                 type : "textbox",
@@ -163,22 +162,10 @@ $(function () {
                                     buttonAlign:'right',
                                     onClickButton:function () {
                                         var dd = $(this);
-                                        var value;
                                         var getSelectedRow = $('#editTab').datagrid("getSelected");
                                         var gIndex = $('#editTab').datagrid("getRowIndex", getSelectedRow);
-                                        console.info(getSelectedRow);
-                                        if(newRow){
-                                            $("#province").combobox('setValue',"");
-                                            $("#city").combobox('setValue',"");
-                                            $("#district").combobox('setValue',"");
-                                            $("#detailDistrict").val('')
-                                        }else{
-
-                                            value = getSelectedRow.provinceName+","+getSelectedRow.cityName+","+getSelectedRow.districtName+","+ getSelectedRow.address;
-
-                                        }
+                                        var value = getSelectedRow.province+","+getSelectedRow.city+","+getSelectedRow.district+","+ getSelectedRow.address;
                                         openSelectAddress(value);
-
                                       var sec =  layer.open({
                                             type: 1,
                                             skin: 'layui-layer-molv', //加上边框
@@ -187,11 +174,9 @@ $(function () {
                                             ,btn: ['保存', '取消']
                                             ,yes: function(sec, layero){
                                                 layer.close(sec);
-
                                                 var provinceId = $("#province").combobox('getValue'),
                                                     cityId = $("#city").combobox('getValue'),
                                                     districtId = $("#district").combobox('getValue');
-
                                                     getSelectedRow.province = provinceId;
                                                     getSelectedRow.city = cityId;
                                                     getSelectedRow.district = districtId;
@@ -200,10 +185,8 @@ $(function () {
                                                     getSelectedRow.districtName = $("#district").combobox('getText');
                                                     getSelectedRow.address = $("#detailDistrict").val();
                                                     $('#editTab').datagrid('updateRow', {index: gIndex, row: getSelectedRow});
-
                                                     dd.textbox('setValue',getSelectedRow.provinceName+getSelectedRow.cityName+getSelectedRow.districtName+ getSelectedRow.address)
 
-                                                newRow = false;
                                             }
                                             ,btn2: function(sec, layero){
                                                 layer.close(sec);
@@ -230,17 +213,6 @@ $(function () {
                     lastFieldFun: function (dg, index, field) {
                         console.info(index, field);
                         $('#editTab').datagrid('append', {});
-                        newRow = true;
-                        /*if(newRow){
-                            //
-                            $('#editTab').datagrid('updateRow',{
-                                index: 2,
-                                row: {}
-                            });
-
-                        }*/
-
-
                     },
                     toolbar:[{
                         id:'addEdit',
@@ -260,10 +232,8 @@ $(function () {
                                 districtName:'',
                                 address:'',
                                 first:''
-                            }
+                            };
                             $('#editTab').datagrid('append', row);
-                            newRow = true;
-
                         }
                     },'-', {
                         text: '删除',
@@ -291,22 +261,10 @@ $(function () {
 
                 }).datagrid('enableCellEditing');
 
-                var data = {
-                    code:$("#code").val(),
-                    name:$("#name").val(),
-                    category1:$("#category1").val(),
-                    initDate1:$("#initDate1").val(),
-                    taxPayerNo:$("#taxPayerNo").val(),
-                    bank:$("#bank").val(),
-                    cardNo:$("#cardNo").val(),
-                    receiveFunds1:$("#receiveFunds1").val(),
-                    periodReceiveFunds1:$("#periodReceiveFunds1").val(),
-                    employee:$("#employee").val()
-                };
                 layer.open({
                     type: 1,
                     skin: 'layui-layer-molv', //加上边框
-                    area: ['680px', '580px'], //宽高
+                    area: ['680px', '480px'], //宽高
                     content: $('#addCusDialog')
                     ,btn: ['保存', '取消']
                     ,yes: function(index, layero){
@@ -318,11 +276,21 @@ $(function () {
                             layer.alert("客户名称不能为空");
                             return false;
                         }
-                        var rows = $('#editTab').datagrid('getRows');
-                        console.info(rows);
-                        return;
-
-
+                        var rowsData = $('#editTab').datagrid('getRows');
+                        console.info(rowsData);
+                        var data = {
+                            code:$("#code").val(),
+                            name:$("#name").val(),
+                            category1:$("#category1").val(),
+                            initDate1:$("#initDate1").val(),
+                            taxPayerNo:$("#taxPayerNo").val(),
+                            bank:$("#bank").val(),
+                            cardNo:$("#cardNo").val(),
+                            receiveFunds1:$("#receiveFunds1").val(),
+                            periodReceiveFunds1:$("#periodReceiveFunds1").val(),
+                            employee:$("#employee").val(),
+                            contact:rowsData
+                        };
 
                         $.ajax({
                             type:"POST",
@@ -366,6 +334,9 @@ function openSelectAddress(value){ //打开地址
         ids = value.split(',');
     }
     var url = genAPI('settings/district');
+
+    $('#city').combobox('loadData', {data:[]});
+    $('#district').combobox('loadData', {data:[]});
     // 省
     $("#province").combobox({
         url: url+"?key=0",
@@ -374,17 +345,15 @@ function openSelectAddress(value){ //打开地址
         cache: false,
         editable: false, //只读
         loadFilter:function (res) {
-            return res.data
+            var data = res.data;
+            return data
         },
         onSelect:function(record){
             if(record.cidx){
                 $('#city').combobox('reload',url+"?key=1&start="+record.cidx[0]+"&end="+record.cidx[1]);
+                $('#city').combobox('options').url=null;
             }
-            $('#city').combobox('clear');
-            $('#city').combobox('setValue','');
-            $('#district').combobox('clear');
-            $('#district').combobox('setValue','');
-            //$('#district').combobox('loadData', {});
+
         },
         onLoadSuccess: function () {
             if(ids && ids[0]){
@@ -401,11 +370,12 @@ function openSelectAddress(value){ //打开地址
             return res.data
         },
         onSelect:function(record){
+            $('#district').combobox('clear');
             if(record.cidx){
                 $('#district').combobox('reload',url+"?key=2&start="+record.cidx[0]+"&end="+record.cidx[1]);
+                $('#district').combobox('options').url=null;
             }
-            $('#district').combobox('clear');
-            $('#district').combobox('setValue','');
+
         },
         onLoadSuccess: function () {
             if(ids && ids[1]){
@@ -427,12 +397,10 @@ function openSelectAddress(value){ //打开地址
             }
         }
     });
-
+    $("#detailDistrict").val(ids[3] || "");
 }
 
 
-//第一：省市区选择之后再次新增上次的市区没有被清空
-//第二：当前省市区选择之后，再次进去修改而详细地址被最后一次填写的覆盖
 
 
 
