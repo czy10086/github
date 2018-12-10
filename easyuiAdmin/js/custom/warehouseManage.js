@@ -26,7 +26,7 @@ $(function () {//ready()文档加载后
                     if (value=="1"){
                         return "启用";
                     } else {
-                        return "禁用";
+                        return "用";
                     }
                 }}
         ]],
