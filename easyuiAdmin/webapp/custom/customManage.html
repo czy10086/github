@@ -46,8 +46,8 @@
 
 </head>
 <body>
-<div class="easyui-layout" data-options="region:'center',fit:true" style="height:100%">
-    <div class="form-inline">
+
+    <div class="form-inline search-head">
         <div class="form-group">
             <div class="col-sm-12" style="padding-right:0;padding-left:6px;">
                 <input id="pids" placeholder="请选择客户类别" class="easyui-combotree form-control" style="width:200px;">
@@ -62,11 +62,14 @@
             </div>
         </div>
     </div>
-    <table id="customList"></table>
-</div>
+    <div  class="easyui-layout" data-options="region:'center',fit:true" style="height:90%">
+        <table class="easyui-datagrid" id="customList"></table>
+    </div>
+
 <div id="addCusDialog">
     <div class="wrapper-content">
         <form class="form-horizontal">
+                <input type="hidden" value="add" id="action_type"/>
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">客户编号</label>
@@ -136,6 +139,7 @@
                     </div>
                 </div>
             <table id="editTab"></table>
+            <textarea id="note" class="form-control" placeholder="添加备注信息"></textarea>
         </form>
     </div>
 </div>
