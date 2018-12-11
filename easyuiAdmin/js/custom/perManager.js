@@ -178,7 +178,7 @@ $(function () {
             handler:function () {
                 var rowSelect=$("#perList").datagrid("getSelected");
                 if(!rowSelect){
-                    $.messager.alert('提醒','请选中一行进行分配',{skin:'layui-layer-molv'});
+                    layer.alert('请选中一行进行分配',{skin:'layui-layer-molv'});
                 }
                 var data = {
                     uid : rowSelect.uid
