@@ -1,5 +1,29 @@
 
 $(function () {
+    // 自定义的校验器
+    var reg = /^1[3|4|5|7|8|9][0-9]{9}$/;
+    $.extend($.fn.validatebox.defaults.rules, {
+        midLength: {
+            validator: function(value, param){
+                return value.length >= param[0] && value.length <= param[1];
+            },
+            message: ''
+        } ,
+        equalLength : {
+            validator: function(value, param){
+                return value.length == param[0];
+            },
+            message: '密码必须为4个字符!'
+        },
+        phonenumber: {
+            validator: function(value, param){
+                return reg.test(value);
+                },
+            message: '手机号输入有误！'
+        }
+    });
+
+
     $.extend($.fn.datagrid.methods, {
         endEditing: function (jq) {
             return jq.each(function(){
@@ -84,10 +108,10 @@ $(function () {
                     });
 
                 }else{
-                    var target = $(ed.target);
-                    target.blur();
-                    target.datagrid('acceptChanges');
-                    target.datagrid('endEdit', opts.editIndex);
+                 //   var target = $(ed.target);
+                 //   target.blur();
+                 //   target.datagrid('acceptChanges');
+                 //   target.datagrid('endEdit', opts.editIndex);
                 }
                 for(var i=0; i<fields.length; i++){
                     var col = dg.datagrid('getColumnOption', fields[i]);
