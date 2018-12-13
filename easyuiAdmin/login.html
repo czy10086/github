@@ -5,117 +5,21 @@
     <!-- 避免IE使用兼容模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="renderer" content="webkit">
-    <meta name="keywords" content='easyui,jui,jquery easyui,easyui demo,easyui中文'/>
     <title>用户登录</title>
-    <!-- 浏览器标签图片 -->
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="css/default.css">
     <link rel="stylesheet" href="css/font-awesome/font-awesome.css">
-    <style type="text/css">
-        html, body {
-            height: 100%;
-        }
-
-        .box {
-            background: url("images/loginBg.jpg") no-repeat center center;
-            background-size: cover;
-
-            margin: 0 auto;
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .login-box {
-            width: 100%;
-            max-width: 500px;
-            height: 400px;
-            position: absolute;
-            top: 50%;
-
-            margin-top: -200px;
-            /*设置负值，为要定位子盒子的一半高度*/
-
-        }
-
-        @media screen and (min-width: 500px) {
-            .login-box {
-                left: 50%;
-                /*设置负值，为要定位子盒子的一半宽度*/
-                margin-left: -250px;
-            }
-        }
-
-        .form {
-            width: 100%;
-            max-width: 500px;
-            height: 275px;
-            margin: 2px auto 0px auto;
-        }
-
-        .login-content {
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            height: 250px;
-            width: 100%;
-            max-width: 500px;
-            background-color: rgba(255, 250, 2550, .6);
-            float: left;
-        }
-
-        .input-group {
-            margin: 30px 0px 0px 0px !important;
-        }
-
-        .form-control,
-        .input-group {
-            height: 40px;
-        }
-
-        .form-actions {
-            margin-top: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 0px !important;
-        }
-
-        .login-title {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            padding: 20px 10px;
-            background-color: rgba(0, 0, 0, .6);
-        }
-
-        .login-title h1 {
-            margin-top: 10px !important;
-        }
-
-        .login-title small {
-            color: #fff;
-        }
-
-        .link p {
-            line-height: 20px;
-            margin-top: 30px;
-        }
-
-        .btn-sm {
-            padding: 8px 24px !important;
-            font-size: 16px !important;
-        }
-
-        .flag {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #fff;
-            font-weight: bold;
-            font: 14px/normal "microsoft yahei", "Times New Roman", "宋体", Times, serif;
-        }
-    </style>
+    <script src="js/common/jquery.min.js"></script>
+    <script src="js/common/jquery.cookie.js"></script>
+    <script src="js/common/bootstrap.min.js"></script>
+    <!--[if lt IE 9]-->
+    <script src="js/common/html5shiv.min.js"></script>
+    <script src="js/common/respond.min.js"></script>
+    <script src="config.js"></script>
+    <script src="js/login.js"></script>
 </head>
 <body>
-<div class="box">
+<div class="login">
     <div class="login-box">
         <div class="login-title text-center">
             <span class="flag"><i class="fa fa-user"></i> 用户登陆</span>
@@ -123,7 +27,7 @@
                 <small>鸿雁电器</small>
             </h1>
         </div>
-        <div class="login-content ">
+        <div class="login-content">
             <div class="form">
                 <form id="modifyPassword" class="form-horizontal" action="#" method="post">
                     <input type="hidden" id="referer" name="referer" value="">
@@ -132,7 +36,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                                 <input type="text" id="khdm" name="khdm" class="form-control" placeholder="企业代码"
-                                       value="admin">
+                                       value="">
                             </div>
                         </div>
                     </div>
@@ -180,94 +84,5 @@
     </div>
 </div>
 
-<!-- 引入jQuery -->
-<script src="js/common/jquery.min.js"></script>
-<script src="js/common/jquery.cookie.js"></script>
-<script src="js/common/bootstrap.min.js"></script>
-
-<!--[if lt IE 9]-->
-<script src="js/common/html5shiv.min.js"></script>
-<script src="js/common/respond.min.js"></script>
-<script src="config.js"></script>
-<script type="text/javascript">
-    if (navigator.appName == "Microsoft Internet Explorer" &&
-        (navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" ||
-            navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" ||
-            navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0")
-    ) {
-        alert("您的浏览器版本过低，请使用360安全浏览器的极速模式或IE9.0以上版本的浏览器");
-    }
-</script>
-<script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?71559c3bdac3e45bebab67a5a841c70e";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-<script type="text/javascript">
-    $(function () {
-
-        $('#password').keyup(function (event) {
-            if (event.keyCode == "13") {
-                $("#login").trigger("click");
-                return false;
-            }
-        });
-
-        $("#login").on("click", function () {
-            submitForm();
-        });
-
-        function submitForm() {
-            if (navigator.appName == "Microsoft Internet Explorer" &&
-                (navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" ||
-                    navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" ||
-                    navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0")
-            ) {
-                alert("您的浏览器版本过低，请使用360安全浏览器的极速模式或IE9.0以上版本的浏览器");
-            } else {
-                var formData = {
-                    khdm : $('#khdm').val(),
-                    username: $('#username').val(),
-                    password: $('#password').val()
-
-                };
-                $.ajax({
-                    type: 'POST',
-                    url: genAPI('account/login'),
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(formData),
-                    success: function (res) {
-                        if (res.code == 200) {
-                           console.info(res);
-
-                            $.cookie('jwt',res.data.jwt);
-                            $.cookie('khdm',res.data.user.khdm);
-                            $.cookie('realName',res.data.user.realName);
-                            $.cookie('uid',res.data.user.uid);
-                            $.cookie('username',res.data.user.username);
-
-                            location.href='index.html'
-                        } else {
-                            $('#myModal').modal();
-                            //alert("用户名或密码错误！");
-                        }
-                    },
-                    error: function () {
-
-                    }
-                });
-            }
-        }
-
-        $("#reset").on("click", function () {
-            $("#username").val("");
-            $("#password").val("");
-        });
-    });
-</script>
 </body>
 </html>

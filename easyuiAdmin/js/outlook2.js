@@ -127,8 +127,7 @@ function tabCloseMenu() {
 
 }
 //绑定右键菜单事件
-function tabCloseEven()
-{
+function tabCloseEven() {
 	//刷新
 	$('#mm-tabupdate').click(function(){
 		var currTab = $('#tabs').tabs('getSelected');
@@ -194,4 +193,30 @@ function tabCloseEven()
 //弹出信息窗口 title:标题 msgString:提示信息 msgType:信息类型 [error,info,question,warning]
 function msgShow(title, msgString, msgType) {
 	$.messager.alert(title, msgString, msgType);
+}
+
+$(function () {
+    $.cookie('jwt');
+    $.cookie('khdm');
+    $.cookie('realName');
+    $.cookie('uid');
+    $.cookie('username');
+    $("#username").text($.cookie('realName'));
+
+});
+
+function logout() {
+    layer.confirm('确定要退出吗？', {
+        skin: 'layui-layer-molv',
+        btn: ['确定','取消'] //按钮
+    }, function(r){
+        if (r) {
+            layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            window.location.href = './login.html' + location.search;
+        }
+    }, function(index){
+        layer.close(index)
+    });
 }

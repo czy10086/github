@@ -1,12 +1,37 @@
 ﻿*{font-size:12px; font-family:'Tahoma,Verdana,微软雅黑,新宋体'}
 a{ color:Black; text-decoration:none;}
-a:hover{ color:Red; text-decoration:underline;}
-.textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
+a:hover{text-decoration:underline;}
+.textbox03 {border:1px solid #878787;padding: 4px 3px;font-family:"微软雅黑",Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
 .panel-body{padding:0}
-.txt01{font:Verdana, Geneva, sans-serif,宋体;padding:3px 2px 2px 2px; border-width:1px; border-color:#ddd;  color:#000;}
-.txt {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
+.txt01{font-family:"微软雅黑",Verdana, Geneva, sans-serif,宋体;padding:3px 2px 2px 2px; border:1px solid #ddd; color:#000;}
+.txt {border: #878787 1px solid;padding: 4px 3px;font-family:"微软雅黑",Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
 .footer{text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
-
+body { font:12px/1.2em Microsoft YaHei;}
+a, a:link { color:#000; text-decoration:none; outline:none;}
+a:hover, a:focus { text-decoration:none; color:#2bb988;}
+.pd3 { padding:3px;}
+.pd5 { padding:5px;}
+.pd10 { padding:10px;}
+label, button, input, select, textarea { font-size:12px; vertical-align: middle;}
+input, button, select, textarea { font:12px/1.2em Microsoft YaHei;}
+select, button, input[type="button"], input[type="reset"], input[type="submit"], input[type="radio"], input[type="checkbox"] { cursor: pointer;}
+/*头部*/
+.tabs-tool { border-top:0;}
+.text,
+.textarea { padding:3px; border:1px #95b8e7 solid; width:260px;}
+.header { height:55px; position:relative; z-index:0; overflow:hidden; border-bottom:1px #95b8e7 solid; background:#1ab394;}
+.header-left { position:absolute; z-index:1; left:15px; top:0;}
+.header-left h1 { font:20px/20px Verdana; color:#fff;}
+.header-right { position:absolute; z-index:1; right:5px; top:0; color:#fff; text-align:right;}
+.header-right p { line-height:0.7em;}
+.header-right a { color:#fff; margin:0 5px;}
+.sidebar { width:160px;}
+.side-tree .tree-node { padding:3px 0px; }
+.side-tree a { display:block;}
+.side-tree .tree-node-selected { padding:2px 0; border:1px #fade23 solid;}
+.toolbar-button,
+.toolbar-search { padding:3px 5px;}
+.footer { height:20px; padding:5px; text-align:center; overflow:hidden; background:#e0ecff;}
 .head a{color:White;text-decoration:underline;}
 .easyui-accordion ul{list-style-type:none;margin:0px; padding:10px 0;}
 .easyui-accordion ul li{ padding:0px;}
@@ -19,6 +44,99 @@ a:hover{ color:Red; text-decoration:underline;}
 .accordion-header-selected .fa{color:#fff}
 .fa{margin-top: -6px;}
 .panel-title{color:#333;font-size:13px;}
+/*login*/
+.login{
+    background: url("../images/loginBg.jpg") no-repeat center center;
+    background-size: cover;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.login-box {
+    width: 100%;
+    max-width: 500px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    margin-top: -200px;
+
+}
+@media screen and (min-width: 500px) {
+    .login-box {
+        left: 50%;
+        /*设置负值，为要定位子盒子的一半宽度*/
+        margin-left: -250px;
+    }
+}
+
+.form {
+    width: 100%;
+    max-width: 500px;
+    height: 275px;
+    margin: 2px auto 0px auto;
+}
+
+.login-content {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    height: 250px;
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(255, 250, 2550, .6);
+    float: left;
+}
+
+.input-group {
+    margin: 30px 0 0 0 !important;
+}
+
+.form-control,
+.input-group {
+    height: 40px;
+}
+
+.form-actions {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 0 !important;
+}
+
+.login-title {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 20px 10px;
+    background-color: rgba(0, 0, 0, .6);
+}
+
+.login-title h1 {
+    margin-top: 10px !important;
+}
+
+.login-title small {
+    color: #fff;
+}
+
+.link p {
+    line-height: 20px;
+    margin-top: 30px;
+}
+
+.btn-sm {
+    padding: 8px 24px !important;
+    font-size: 16px !important;
+}
+
+.flag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-weight: bold;
+    font: 14px/normal "microsoft yahei", "Times New Roman", "宋体", Times, serif;
+}
 /*导航*/
 
 #west{
@@ -65,5 +183,9 @@ a:hover{ color:Red; text-decoration:underline;}
 
 .layui-layer-molv .layui-layer-btn .layui-layer-btn1{
     background-color: #fff!important;
+}
+
+.combo-p{
+    z-index: 99999999!important;
 }
 
