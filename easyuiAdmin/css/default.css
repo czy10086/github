@@ -1,6 +1,6 @@
 ﻿*{font-size:12px; font-family:'Tahoma,Verdana,微软雅黑,新宋体'}
 a{ color:Black; text-decoration:none;}
-a:hover{ color:Red; text-decoration:underline;}
+a:hover{text-decoration:underline;}
 .textbox03 {border:1px solid #878787;padding: 4px 3px;font-family:"微软雅黑",Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
 .panel-body{padding:0}
 .txt01{font-family:"微软雅黑",Verdana, Geneva, sans-serif,宋体;padding:3px 2px 2px 2px; border:1px solid #ddd; color:#000;}
@@ -25,15 +25,12 @@ select, button, input[type="button"], input[type="reset"], input[type="submit"],
 .header-right { position:absolute; z-index:1; right:5px; top:0; color:#fff; text-align:right;}
 .header-right p { line-height:0.7em;}
 .header-right a { color:#fff; margin:0 5px;}
-
 .sidebar { width:160px;}
 .side-tree .tree-node { padding:3px 0px; }
 .side-tree a { display:block;}
 .side-tree .tree-node-selected { padding:2px 0; border:1px #fade23 solid;}
-
 .toolbar-button,
 .toolbar-search { padding:3px 5px;}
-
 .footer { height:20px; padding:5px; text-align:center; overflow:hidden; background:#e0ecff;}
 .head a{color:White;text-decoration:underline;}
 .easyui-accordion ul{list-style-type:none;margin:0px; padding:10px 0;}
@@ -48,7 +45,6 @@ select, button, input[type="button"], input[type="reset"], input[type="submit"],
 .fa{margin-top: -6px;}
 .panel-title{color:#333;font-size:13px;}
 /*login*/
-
 .login{
     background: url("../images/loginBg.jpg") no-repeat center center;
     background-size: cover;
