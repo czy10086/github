@@ -127,8 +127,7 @@ function tabCloseMenu() {
 
 }
 //绑定右键菜单事件
-function tabCloseEven()
-{
+function tabCloseEven() {
 	//刷新
 	$('#mm-tabupdate').click(function(){
 		var currTab = $('#tabs').tabs('getSelected');
