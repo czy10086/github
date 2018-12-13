@@ -50,7 +50,6 @@ $(function () {//ready()文档加载后
                 }else{
                     layer.alert("请选中一行进行编辑",{skin:'layui-layer-molv'});
                 }
-
             }
         }
         ]
