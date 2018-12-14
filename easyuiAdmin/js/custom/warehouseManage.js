@@ -26,10 +26,33 @@ $(function () {//ready()文档加载后
                     if (value=="1"){
                         return "启用";
                     } else {
-                        return "用";
+                        return "禁用";
                     }
                 }}
         ]],
+        toolbar:[{//同linkbutton链接按钮
+            text:'添加',
+            iconCls:'fa fa-plus fa-lg',
+            handler:function(){//?
+                $("#addWareH").dialog("open");//?
+                //$(".hidden-class").css("display","none");//?
+            }
+        },'-',{
+            text:'编辑',
+            iconCls:'fa fa-pencil-square-o fa-lg',
+            handler:function(){
+                $("#action_type").val("edit");
+                var rowSelect=$("#warehouseManage").datagrid("getSelected");
+                if(rowSelect){//?
+                    $("#addWareH").dialog("open");
+                    $("#id").val(rowSelect.id);
+                    $("#name").val(rowSelect.name)
+                }else{
+                    layer.alert("请选中一行进行编辑",{skin:'layui-layer-molv'});
+                }
+            }
+        }
+        ]
     })
     }
 )

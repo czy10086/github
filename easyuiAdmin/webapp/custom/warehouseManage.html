@@ -36,5 +36,19 @@
 <div class="easyui-layout" data-options="region:'center',fit:true" style="height:100%">
     <table id="warehouseManage"></table>
 </div>
+<div id="addWareH" class="easyui-dialog" style="width:600px;height:300px;" data-options="modal:true,title:'添加组',closed:true,buttons:'#GroupBtn'">//dialog的属性，dialog扩展自window
+    <div class="row">
+        <div class="col-sm-8">
+            <form id="ff" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="name">仓库名:</label>
+                    <div class="col-sm-9">
+                        <input id="name" class="easyui-validatebox form-control" type="text" name="name" required="true"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
