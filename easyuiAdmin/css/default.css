@@ -86,6 +86,7 @@ select, button, input[type="button"], input[type="reset"], input[type="submit"],
     background-color: rgba(255, 250, 2550, .6);
     float: left;
 }
+
 .form-control, .input-group {
     height: 30px;
 }
