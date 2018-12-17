@@ -33,7 +33,7 @@ $(function () {
             console.info(data);
         }
 
-    })
+    });
 
     $("#vendorList").datagrid({
         url:genAPI('settings/vendorList'),
@@ -53,10 +53,9 @@ $(function () {
             category:$("#pid").val()
         },
         columns:[[
-            { field:'category2',title:'客户类别',hidden:true},
-            { field:'code',title:'客户编号',width:100},
-            { field:'name',title:'客户名称',width:200},
-            { field:'employee',title:'销售人员',width:200},
+            { field:'category2',title:'供应商类别',hidden:true},
+            { field:'code',title:'供应商编号',width:100},
+            { field:'name',title:'供应商名称',width:200},
             { field:'contact',title:'首要联系人',width:200},
             { field:'mobile',title:'手机',width:200},
             { field:'phone',title:'座机',width:200},
@@ -75,30 +74,6 @@ $(function () {
             iconCls:'fa fa-pencil-square-o fa-lg',
             handler:function(){
 
-
-            }
-        },'-',{
-            text:'重置密码',
-            iconCls:'fa fa-refresh fa-lg',
-            handler:function(){
-
-            }
-        },'-',{
-            text:'冻结账号',
-            iconCls:'fa fa-warning fa-lg',
-            handler:function(){
-
-            }
-        },'-',{
-            text:'启用账号',
-            iconCls:'fa fa-check-circle fa-lg',
-            handler:function(){
-
-            }
-        },'-',{
-            text:'分配组',
-            iconCls:'fa fa-users fa-lg',
-            handler:function () {
 
             }
         }]
