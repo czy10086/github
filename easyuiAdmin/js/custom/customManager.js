@@ -6,7 +6,10 @@ $(function () {
         }
 
     });
-    var height=(Number($(".easyui-layout").height()))*0.9; // 计算高度
+    //$(".addUser").parent().css({"color":"red","border":"2px solid red"});
+
+    // table高度自适应
+    var height=(Number($(".easyui-layout").height()))*0.9;
     $("#customList").datagrid({
         height : height
     });
@@ -14,16 +17,8 @@ $(function () {
     $("span.combo").click(function () {
         $(".combo-p").css('z-index', '99999999999');
     });
-
+    //初始化日期
     $('#initDate1').datebox('calendar');
-
-    /* $('#initDate1').datebox().datebox('calendar').calendar({
-        validator : function(date){
-            var now = new Date();
-            var d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate());
-            return d1 <= date;
-        }
-    });*/
 
     $("#pids").combotree({
         url:genAPI('settings/categoryList'),
@@ -32,7 +27,7 @@ $(function () {
         parentField:'pid',
         panelWidth:'200',
         loadFilter:function (data) {
-            return data.data
+            return data.data;
         },
         formatter:function(node){
             return node.name;
@@ -40,18 +35,12 @@ $(function () {
         queryParams:{
             typeNum:1
         },
-        onClick : function(node) {
-            //console.log(node);
-        },
-        onBeforeExpand:function(node,param){
-
-        },
         onLoadSuccess:function(node,data){
 
         }
-
     });
-    var pid = $("#pids").combotree('getValue');
+    var pid = $(".pids").combotree('getValue');
+
     $("#customList").datagrid({
         url:genAPI('settings/customerList'),
         method:'post',
@@ -75,7 +64,9 @@ $(function () {
             { field:'category1',title:'客户类别',hidden:true},
             { field:'code',title:'客户代码',width:100},
             { field:'name',title:'客户名称',width:200},
-            { field:'employee',title:'销售人员',width:200},
+            { field:'employee',title:'销售人员',width:200,formatter:function (value,row,index) {
+                    return row.employeeName
+                }},
             { field:'contact',title:'首要联系人',width:200},
             { field:'mobile',title:'手机',width:200},
             { field:'phone',title:'座机',width:200},
@@ -106,6 +97,7 @@ $(function () {
 
                     $("#action_type").val("add");
 
+
                 customDialog();
 
             }
@@ -125,17 +117,6 @@ $(function () {
                 };
                 if(rowSelect){
                     customDialog();
-                    /*$.post(genAPI('settings/customerInfo'),{data:JSON.stringify(data)},function (res) {
-                            $("#editTab").datagrid({data:res.data.contact});
-                            $("#category1").val(res.data.category1);
-                            $('#initDate1').datebox('setValue', res.data.initDate1);
-                            $("#taxPayerNo").val(res.data.taxPayerNo);
-                            $("#bank").val(res.data.bank);
-                            $("#cardNo").val(res.data.cardNo);
-                            $("#receiveFunds1").val(res.data.receiveFunds1);
-                            $("#periodReceiveFunds1").val(res.data.periodReceiveFunds1);
-                            $("#employee").val(res.data.employee);
-                    },'json');*/
                     $.ajax({
                         type:"post",
                         url:genAPI('settings/customerInfo'),
@@ -145,7 +126,7 @@ $(function () {
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                             $("#editTab").datagrid({data:res.data.contact});
-                            $("#category1").val(res.data.customer.category1);
+                            $("#pid").combotree('setValue',rowSelect.category1);
                             $('#initDate1').datebox('setValue', res.data.customer.initDate1);
                             $("#code").val(res.data.customer.code);
                             $("#name").val(res.data.customer.name);
@@ -154,7 +135,7 @@ $(function () {
                             $("#cardNo").val(res.data.customer.cardNo);
                             $("#receiveFunds1").val(res.data.customer.receiveFunds1);
                             $("#periodReceiveFunds1").val(res.data.customer.periodReceiveFunds1);
-                            $("#employee").val(res.data.customer.employee);
+                            $("#employee").combobox('setValue',res.data.customer.employee);
                         },error:function () {
 
                         }
@@ -163,51 +144,128 @@ $(function () {
                 }
             }
         }]
-    })
-
+    });
 
 });
 
 function customDialog() {
+
+    //客户类别
+    $("#pid").combotree({
+        valueField:'id',
+        textField:'name',
+        parentField:'pid',
+        panelWidth:'200',
+        formatter:function(node){
+            return node.name;
+        }
+    }).combotree('loadData', $("#pids").combotree("tree").tree("getRoots"));
+
+    //销售人员
+    $("#employee").combobox({
+        url:genAPI('user/comboList'),
+        valueField: 'uid',
+        textField: 'realName',
+        cache: false,
+        editable: false,
+        panelHeight:'200',
+        loadFilter:function (res) {
+            //return res.data;
+            var menu = [{uid:'addUser',realName:'＋ 新增职员'}];
+            var obj = eval(res.data);
+            $.each(obj, function (i,val) {
+                menu.push(val);
+            });
+            return menu;
+        },
+        formatter: function(row){
+
+            var opts = $(this).combobox('options');
+            if(row[opts.valueField]=='addUser'){
+                return '<span class="addUser">'+row[opts.textField]+'</span>';
+            }else{
+                return row[opts.textField]
+            }
+        },
+        onSelect:function (record) {
+           // console.info(record);
+            if(record.uid == 'addUser'){
+                $('#employee').combobox('setValue','');
+                $("#employee").combobox('clear');
+            }
+        },
+        onLoadSuccess: function () {
+            $(".addUser").parent().css({
+                "position":"absolute","bottom":"0","left":"0",
+                "width":"100%","text-align":"center",
+                "border-top":"1px solid #e5e5e5","height":"35px",
+                "line-height":"35px","background":"#fff"});
+            $(".addUser").parent().parent().css({'padding-bottom':'40px'});
+
+            $(".addUser").on("click",function () {
+                $("#employee").combobox('clear');
+                $('#employee').combobox('setValue','');
+                $("#employee").combobox('loadData', {data:[]});
+                layer.open({
+                    title:'新增职员',
+                    type:1,
+                    area: ['380px', '280px'], //宽高
+                    skin:'layui-layer-molv',
+                    content:$("#addUser"),
+                    btn:['保存','取消'],
+                    yes:function (index,layero) {
+                        if($("#username").val()==""){
+                            layer.msg("用户名不能为空");
+                            return false
+                        }
+                        if($("#realName").val()==""){
+                            layer.msg("姓名不能为空");
+                            return false
+                        }
+                        if($("#sex").val()==""){
+                            layer.msg("性别不能为空");
+                            return false
+                        }
+                        var data = {
+                            username:$("#username").val(),
+                            realName:$("#realName").val(),
+                            sex:$("#sex").val()
+                        };
+                        $.ajax({
+                            type:'post',
+                            url:genAPI('user/register'),
+                            cache:false,
+                            dataType:"json",
+                            data:JSON.stringify(data),
+                            contentType : "application/json;charset=UTF-8",
+                            success:function (res) {
+                                // console.info(res);
+                                layer.close(index);
+                                $("#employee").val("");
+                                $("#employee").combobox('clear');
+                                $("#employee").combobox("reload",genAPI('user/comboList'));
+                            },error:function () {
+
+                            }
+                        })
+                    },
+                    btn2:function (index,layero) {
+                        $("#employee").combobox('clear');
+                        $('#employee').combobox('setValue','');
+                        $("#employee").combobox("reload",genAPI('user/comboList'));
+                    }
+                })
+            })
+        }
+    });
+
+    //联系人
     $('#editTab').datagrid({
         rownumbers : true,
         singleSelect:true,
         pagination:false,
         idField:'id',
         columns:[[
-            { field:'name',
-                title:'联系人',
-                width : 100,
-                hidden:false,
-                editor : {
-                    type : "validatebox"
-                }
-            },
-            { field:'mobile',
-                title:'手机',
-                width : 100,
-                hidden:false,
-                editor : {
-                    type : "validatebox",
-                    validType:'phonenumber'
-                }
-            },
-            { field:'phone',
-                title:'座机',
-                width : 100,
-                hidden:false,
-                editor : {
-                    type : "validatebox"
-                }
-            },
-            { field:'mi',
-                title:'QQ/微信/Email',
-                width : 100,
-                hidden:false,
-                editor : {
-                    type : "validatebox"
-                }
-            },
             { field:'province',
                 title:'省ID',
                 hidden:true
@@ -235,6 +293,38 @@ function customDialog() {
             { field:'districtName',
                 title:'区',
                 hidden:true
+            },
+            { field:'name',
+                title:'联系人',
+                width : 100,
+                hidden:false,
+                editor : {
+                    type : "validatebox"
+                }
+            },
+            { field:'mobile',
+                title:'手机',
+                width : 100,
+                hidden:false,
+                editor : {
+                    type : "validatebox"
+                }
+            },
+            { field:'phone',
+                title:'座机',
+                width : 100,
+                hidden:false,
+                editor : {
+                    type : "validatebox"
+                }
+            },
+            { field:'im',
+                title:'QQ/微信/Email',
+                width : 100,
+                hidden:false,
+                editor : {
+                    type : "validatebox"
+                }
             },
             { field:'contactAddress',
                 title:'联系地址',
@@ -295,23 +385,22 @@ function customDialog() {
                 width : 50,
                 hidden:false,
                 formatter:function(value , record , index){
-                    console.info(typeof(value == 1));
-                    if(typeof(value == 1)){
-                        return '<span>是</span>' ;
-                    } else {
-                        return '<span>否</span>' ;
+                    if(value == 1){
+                        return '是' ;
+                    } else if(value == 0) {
+                        return '否' ;
                     }
                 } ,
                 editor:{
                     type:'combobox' ,
                     options:{
-                        data:[{id:true , val:'是'},{id:false , val:'否'}] ,
+                        data:[{id:1 , val:'是'},{id:0 , val:'否'}] ,
                         valueField:'id' ,
                         textField:'val' ,
                         panelHeight:66
                     }
                 }
-            },
+            }
 
         ]],
         lastFieldFun: function (dg, index, field) {
@@ -319,6 +408,7 @@ function customDialog() {
             $('#editTab').datagrid('append', {});
         },
         toolbar:[{
+            text:'新增',
             id:'addEdit',
             iconCls:'fa fa-plus fa-flg',
             handler:function () {
@@ -326,7 +416,7 @@ function customDialog() {
                     name:'',
                     mobile:'',
                     phone:'',
-                    mi:'',
+                    im:'',
                     province:'',
                     city:'',
                     district:'',
@@ -338,12 +428,20 @@ function customDialog() {
                     first:''
                 };
                 $('#editTab').datagrid('append', row);
+
+                var editIndex = $("#editTab").datagrid('getRows').length;
+                $('#editTab').datagrid('beginEdit', editIndex);
+                var eg = $("#editTab").datagrid('getEditor', {index:editIndex,field:'name'});
+
             }
         },'-', {
             text: '删除',
+            id:'removeEdit',
             iconCls: 'fa fa-remove fa-lg', handler: function () {
                 var row = $("#editTab").datagrid('getSelections');
-
+                if(!row){
+                    layer.msg('请选中一行进行操作！')
+                }
                 if(row.length>0) {
                     var index = layer.confirm('你确定要删除所选记录吗？', {
                         skin: 'layui-layer-molv',
@@ -364,16 +462,16 @@ function customDialog() {
         }
 
     }).datagrid('enableCellEditing');
+
     layer.open({
         type: 1,
         skin: 'layui-layer-molv', //加上边框
         area: ['680px', '480px'], //宽高
-        content: $('#addCusDialog')
-        ,btn: ['保存', '取消']
-        ,yes: function(index, layero){
+        content: $('#addCusDialog'),
+        btn: ['保存', '取消'],
+        yes: function(index, layero){
             //提交保存
             submitCustom();
-
             layer.close(index);
         }
         ,btn2: function(index, layero){
@@ -397,12 +495,11 @@ function submitCustom() {
     var data={};
     if(actionType == "add"){
         url=genAPI('settings/addCustomer');
-
         console.info(rowsData);
          data = {
             code:$("#code").val(),
             name:$("#name").val(),
-            category1:$("#category1").val(),
+            category1:$("#pid").val(),
             initDate1:$("#initDate1").val(),
             taxPayerNo:$("#taxPayerNo").val(),
             bank:$("#bank").val(),
@@ -420,7 +517,7 @@ function submitCustom() {
             id:rowSelect.id,
             code:$("#code").val(),
             name:$("#name").val(),
-            category1:$("#category1").val(),
+            category1:$("#pid").val(),
             initDate1:$("#initDate1").val(),
             taxPayerNo:$("#taxPayerNo").val(),
             bank:$("#bank").val(),
@@ -521,6 +618,16 @@ function openSelectAddress(value){ //打开地址
     });
     $("#detailDistrict").val(ids[3] || "");
 }
+
+
+
+/* $('#initDate1').datebox().datebox('calendar').calendar({
+        validator : function(date){
+            var now = new Date();
+            var d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+            return d1 <= date;
+        }
+    });*/
 
 
 
