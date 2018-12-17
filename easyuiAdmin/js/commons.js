@@ -68,6 +68,7 @@ $(function () {
                 var opts = dg.datagrid('options');
                 opts.editIndex = param.index;
                 var fields = dg.datagrid('getColumnFields',true).concat(dg.datagrid('getColumnFields'));
+                console.info(fields);
                 var colNum;
                 for(var i=0; i<fields.length; i++){
                     var col = dg.datagrid('getColumnOption', fields[i]);
@@ -84,20 +85,20 @@ $(function () {
                     var target = $(ed.target);
                     if($(ed.target).hasClass('textbox-text')){
                         target.focus();
-                    } else if ($(ed.target).hasClass('textbox-f')){
+                    }else if ($(ed.target).hasClass('textbox-f')){
                         target.textbox('textbox').focus();
-                    }else  {
+                    }else{
                         target.focus();
                     }
-                   // target.bind('keydown', function(e){
-                    $('.datagrid-editable .textbox,.datagrid-editable .datagrid-editable-input,.datagrid-editable .textbox-text').bind('keydown', function(e){
-                        //console.info(ed.target);
+                    target.focus();
+                    $('.datagrid-editable .textbox,.datagrid-editable .datagrid-editable-input,.datagrid-editable .textbox-text,.datagrid-cell-c5-contactAddress .textbox-text').bind('keydown', function(e){
                         var code = e.keyCode || e.which;
                         var opts = dg.datagrid('options');
+                        var flg = opts.columns;
+                        //alert(code);
+                       // alert(fields[colNum+1]);
                         if(code == 13) {
                             if(fields[colNum+1]){
-                                console.info(fields[colNum+1])
-                                console.info(param.index)
                                 opts.onClickCell.call(dg, param.index, fields[colNum+1])
                             } else {
                                 if(opts.lastFieldFun != undefined) {
@@ -107,11 +108,6 @@ $(function () {
                         }
                     });
 
-                }else{
-                 //   var target = $(ed.target);
-                 //   target.blur();
-                 //   target.datagrid('acceptChanges');
-                 //   target.datagrid('endEdit', opts.editIndex);
                 }
                 for(var i=0; i<fields.length; i++){
                     var col = dg.datagrid('getColumnOption', fields[i]);
@@ -123,7 +119,9 @@ $(function () {
             return jq.each(function(){
                 var dg = $(this);
                 var opts = dg.datagrid('options');
-                opts.oldOnClickCell = opts.onClickCell;
+                if(!opts.oldOnClickCell) {
+                    opts.oldOnClickCell = opts.onClickCell;
+                }
                 opts.onClickCell = function(index, field){
                     if (opts.editIndex != undefined){
                         if (dg.datagrid('validateRow', opts.editIndex)){
