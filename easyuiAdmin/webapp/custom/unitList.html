@@ -35,12 +35,15 @@
 <body>
 <div class="navTab">
     <ul class="clearfix">
-        <li class="active" typeNum="0"><a href="javascript:void(0)">单计量单位</a></li>
-        <li typeNum="1"><a href="javascript:void(0)">多计量单位</a></li>
+        <li id="unitWap" class="active" typeNum="0"><a href="javascript:void(0)">单计量单位</a></li>
+        <li id="unitGroupWap" typeNum="1"><a href="javascript:void(0)">多计量单位</a></li>
     </ul>
 </div>
-<div  class="easyui-layout" data-options="region:'center',fit:true" style="height:90%">
-    <table class="easyui-datagrid" id="unitList"></table>
+<div  class="easyui-layout unitWap" data-options="region:'center',fit:true" style="height:90%">
+    <table class="easyui-datagrid" id="unitList1"></table>
+</div>
+<div  class="easyui-layout unitGroupWap" data-options="region:'center',fit:true" style="height:90%">
+    <table class="easyui-datagrid" id="unitList2"></table>
 </div>
 <div id="addUnit1">
     <div class="wrapper-content">
@@ -49,7 +52,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">名称</label>
                     <div class="col-sm-9">
-                        <input class="form-control" id="unitName" name="customNum" type="text" placeholder="必填项"/>
+                        <input class="form-control" id="unitName" name="unitNum" type="text" placeholder="必填项"/>
                     </div>
                 </div>
             </div>
@@ -63,9 +66,9 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">基本单位</label>
                     <div class="col-sm-6">
-                        <input class="form-control"  name="customNum" type="text" placeholder="基本单位应为最小度量单位"/>
+                        <input class="form-control" name="unitNum1" type="text" placeholder="基本单位应为最小度量单位"/>
                     </div>
-                    <button class="col-sm-2 btn btn-default font12" onclick="addUnitRow(this)">增加单位</button>
+                    <button class="col-sm-2 btn btn-default font12" onclick="addUnitRow(this)">增加副单位</button>
                 </div>
                 <ul class="mod-form-rows" id="mod-form-rows">
                     <!--<li class="row-item">
@@ -74,21 +77,9 @@
                             <label id="deputyUnitLabel">副单位1：</label>
                         </div>
                         <div class="ctn-wrap">
-                            <input type="text" class="ui-input" id="deputyUnit"/>
+                            <input type="text" class="ui-input"/>
                             <span class="descript">=</span>
-                            <input type="text" class="ui-input rateNum" id="deputyUnitRate"/>
-                            <span class="descript baseUnitLabel" id="baseUnitLabel">斤</span>
-                        </div>
-                    </li>
-                    <li class="row-item">
-                        <div class="label-wrap">
-                            <a class="fa fa-trash-o fa-lg fa-ico" title="删除"></a>
-                            <label id="deputyUnitLabel">副单位1：</label>
-                        </div>
-                        <div class="ctn-wrap">
-                            <input type="text" class="ui-input" id="deputyUnit"/>
-                            <span class="descript">=</span>
-                            <input type="text" class="ui-input rateNum" id="deputyUnitRate"/>
+                            <input type="text" class="ui-input rateNum"/>
                             <span class="descript baseUnitLabel" id="baseUnitLabel">斤</span>
                         </div>
                     </li>-->
