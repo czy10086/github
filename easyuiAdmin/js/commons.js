@@ -90,13 +90,9 @@ $(function () {
                     }else{
                         target.focus();
                     }
-                    target.focus();
                     $('.datagrid-editable .textbox,.datagrid-editable .datagrid-editable-input,.datagrid-editable .textbox-text,.datagrid-cell-c5-contactAddress .textbox-text').bind('keydown', function(e){
                         var code = e.keyCode || e.which;
                         var opts = dg.datagrid('options');
-                        var flg = opts.columns;
-                        //alert(code);
-                       // alert(fields[colNum+1]);
                         if(code == 13) {
                             if(fields[colNum+1]){
                                 opts.onClickCell.call(dg, param.index, fields[colNum+1])
@@ -166,3 +162,6 @@ $(function () {
 
 
 })
+
+
+
