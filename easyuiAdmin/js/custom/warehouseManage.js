@@ -51,6 +51,42 @@ $(function () {//ready()文档加载后
                     layer.alert("请选中一行进行编辑",{skin:'layui-layer-molv'});
                 }
             }
+        },'-',{
+            text:'删除',
+            iconCls:'fa fa-remove fa-lg',
+            handler:function(){
+
+                var rowSelect=$("#perTeam").datagrid("getSelected");
+                // console.info(rowSelect);
+                if(!rowSelect){
+                    //$.messager.alert('提醒','请选中一行进行删除');
+                    layer.alert("请选中一行进行删除",{skin:'layui-layer-molv'});
+                    return false;
+                }
+                var data={
+                    groupId:rowSelect.id
+                };
+                if(rowSelect){
+                    $.ajax({
+                        type:"post",
+                        url:genAPI('group/deleteGroup'),
+                        cache:false,
+                        dataType:"json",
+                        headers:{
+                            "uid":$.cookie('uid'),
+                            "token":$.cookie('jwt')
+                        },
+                        data: JSON.stringify(data),
+                        contentType : "application/json;charset=UTF-8",
+                        success:function (res) {
+                            layer.msg("删除成功！");
+                            $("#perTeam").datagrid('reload');
+                        }
+                    })
+                }
+
+
+            }
         }
         ]
     })
