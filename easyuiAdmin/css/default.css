@@ -1,4 +1,5 @@
 ﻿*{font-size:12px; font-family:'Tahoma,Verdana,微软雅黑,新宋体'}
+ul,li{list-style: none}
 a{ color:Black; text-decoration:none;}
 a:hover{text-decoration:underline;}
 .textbox03 {border:1px solid #878787;padding: 4px 3px;font-family:"微软雅黑",Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
@@ -15,6 +16,7 @@ a:hover, a:focus { text-decoration:none; color:#2bb988;}
 label, button, input, select, textarea { font-size:12px; vertical-align: middle;}
 input, button, select, textarea { font:12px/1.2em Microsoft YaHei;}
 select, button, input[type="button"], input[type="reset"], input[type="submit"], input[type="radio"], input[type="checkbox"] { cursor: pointer;}
+.font12{font-size:12px;}
 /*头部*/
 .tabs-tool { border-top:0;}
 .text,
@@ -184,3 +186,54 @@ select, button, input[type="button"], input[type="reset"], input[type="submit"],
     z-index: 99999999!important;
 }
 
+/*计量单位*/
+.mod-form-rows{
+    padding:10px 0;
+}
+.mod-form-rows .row-item {
+    margin-bottom: 15px;
+    zoom: 1;
+}
+.mod-form-rows .label-wrap {
+    width: 112px;
+    float: left;
+    display: inline;
+    margin-right: 10px;
+    _margin-right: 7px;
+    line-height: 30px;
+    font-size: 14px;
+    padding-left:20px
+}
+.mod-form-rows .ctn-wrap {
+    overflow: hidden;
+    zoom: 1;
+    line-height: 30px;
+}
+.fa-ico{
+    display: inline-block;
+    width: 20px;
+    height: 10px;
+    vertical-align: middle;
+}
+.ui-input {
+    padding: 6px 5px;
+    width: 96px;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #ddd;
+    color: #555;
+    vertical-align: middle;
+    outline: 0;
+}
+.descript {
+    display: inline-block;
+    /*margin-left: 10px;*/
+}
+.manage-wrap .rateNum {
+    width: 60px;
+    margin-left: 10px;
+}
+.manage-wrap .ui-input {
+    width: 150px;
+    font-size: 14px;
+}

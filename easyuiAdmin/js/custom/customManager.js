@@ -13,7 +13,15 @@ $(function () {
     $("#customList").datagrid({
         height : height
     });
-
+//检索
+    $(".btn-search").on("click",function () {
+        $("#vendorList").datagrid({
+            queryParams:{
+                query:$("#searTxt").val(),
+                category:$("#pid").val()
+            },
+        }).datagrid("reload",genAPI('settings/customerList'));
+    });
     $("span.combo").click(function () {
         $(".combo-p").css('z-index', '99999999999');
     });
@@ -84,7 +92,7 @@ $(function () {
             iconCls:'fa fa-plus fa-lg',
             handler:function(){
                     $("#editTab").datagrid({data:[]}),
-                    $("#category1").val(""),
+                    $("#pid").val(""),
                     $('#initDate1').datebox('setValue', ""),
                     $("#code").val(""),
                     $("#name").val(""),
@@ -96,7 +104,7 @@ $(function () {
                     $("#employee").val("");
 
                     $("#action_type").val("add");
-
+                    $("#code").attr("readonly",false);
 
                 customDialog();
 
@@ -405,7 +413,16 @@ function customDialog() {
         ]],
         lastFieldFun: function (dg, index, field) {
             console.info(index, field);
-            $('#editTab').datagrid('append', {});
+            var row = $('#editTab').datagrid('getRows')[index+1];
+            if(!row) {
+                $('#editTab').datagrid('append', {});
+            }
+            if (dg.datagrid('endEditing')) {
+                dg.datagrid('selectRow', index+1).datagrid('editCell', {
+                    index: index+1,
+                    field: 'name'
+                });
+            }
         },
         toolbar:[{
             text:'新增',
@@ -429,9 +446,13 @@ function customDialog() {
                 };
                 $('#editTab').datagrid('append', row);
 
-                var editIndex = $("#editTab").datagrid('getRows').length;
-                $('#editTab').datagrid('beginEdit', editIndex);
-                var eg = $("#editTab").datagrid('getEditor', {index:editIndex,field:'name'});
+                var editIndex = $("#editTab").datagrid('getRows').length-1;
+                if($('#editTab').datagrid('endEditing')){
+                    $('#editTab').datagrid('selectRow', editIndex).datagrid('editCell', {
+                        index: editIndex,
+                        field: 'name'
+                    });
+                }
 
             }
         },'-', {
@@ -489,6 +510,7 @@ function submitCustom() {
         layer.alert("客户名称不能为空");
         return false;
     }
+    $("#editTab").datagrid('endEditing');
     var actionType=$("#action_type").val();
     var rowsData = $('#editTab').datagrid('getRows');
     var url="";
