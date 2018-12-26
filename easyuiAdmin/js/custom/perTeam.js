@@ -16,10 +16,6 @@ $(function () {
         fitColumns:true,
         striped:true,
         nowrap:true,
-        pagination:true,
-        pageNum: 1,
-        pageSize: 20,
-        pageList: [20, 40, 50],
         rownumbers:true,
         singleSelect:true,
         loadFilter:function (data) {
