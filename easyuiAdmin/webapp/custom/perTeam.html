@@ -36,8 +36,8 @@
 <div class="easyui-layout" data-options="region:'center',fit:true" style="height:100%">
 	<table id="perTeam"></table>
 </div>
-<div id="addGroup" class="easyui-dialog"  style="width:600px;height:300px;" data-options="modal:true,title:'添加组',closed:true,buttons:'#GroupBtn'">
-	<div class="row">
+<div id="addGroup">
+	<div class="form-horizontal">
 		<div class="col-sm-8">
 			<form id="ff" class="form-horizontal">
 				<div class="form-group hidden-class">
@@ -57,16 +57,8 @@
 		</div>
 	</div>
 </div>
-<div id="GroupBtn">
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addGroupSave()" id="addGroupSave">提交</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closed()">关闭</a>
-</div>
-<div id="resourceGroup" class="easyui-dialog"  style="width:600px;height:300px;" data-options="modal:true,title:'添加组',closed:true,buttons:'#resourceGroupBtn'">
+<div id="resourceGroup">
     <ul id="groupTree" class="ztree tree-box" style="width: 250px !important;"></ul>
-</div>
-<div id="resourceGroupBtn">
-    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resourceGroupSave()" id="treeGroupSave">提交</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resourceGroupclosed()">关闭</a>
 </div>
 </body>
 </html>
