@@ -21,14 +21,13 @@ select, button, input[type="button"], input[type="reset"], input[type="submit"],
 .tabs-tool { border-top:0;}
 .text,
 .textarea { padding:3px; border:1px #95b8e7 solid; width:260px;}
-.header { height:55px; position:relative; z-index:0; overflow:hidden; border-bottom:1px #95b8e7 solid; background:#1ab394;/*left:180px;*/}
-/*.main{width:100%;}*/
+.header { height:66px; position:relative; z-index:0; overflow:hidden; border-bottom:1px solid #e5e5e5;}
 .header-left { position:absolute; z-index:1; left:15px; top:0;}
-.header-left h1 { font:20px/20px Verdana; color:#fff;}
-.header-right { position:absolute; z-index:1; right:5px; top:0; color:#fff; text-align:right;}
-.header-right p { line-height:0.7em;}
-.header-right a { color:#fff; margin:0 5px;}
-/*.tabs-wrap{left:180px;}*/
+.header-left h1 { font:22px/30px Verdana;}
+.header-right { position:absolute; z-index:1; right:5px; top:0; text-align:right;}
+/*.header-right p { line-height:0.7em;}*/
+.tabs li a.tabs-inner{border-radius: 0;}
+.header-right a { margin:0 5px;}
 .sidebar { width:160px;}
 .side-tree .tree-node { padding:3px 0px; }
 .side-tree a { display:block;}
@@ -36,22 +35,37 @@ select, button, input[type="button"], input[type="reset"], input[type="submit"],
 .toolbar-button,
 .toolbar-search { padding:3px 5px;}
 .footer { height:20px; padding:5px; text-align:center; overflow:hidden; background:#e0ecff;}
+.panel-header{
+    background-color: #2f4050;
+    background: -webkit-linear-gradient(top,#2f4050 0,#2f4050 100%);
+    background: -moz-linear-gradient(top,#2f4050 0,#2f4050 100%);
+    background: -o-linear-gradient(top,#2f4050 0,#2f4050 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#2f4050,endColorstr=#2f4050,GradientType=0);
+    border:none;
+}
+.panel-header .panel-title{color:#fff;height:45px;line-height:45px;}
+.panel-body{border-style:none}
 .head a{color:White;text-decoration:underline;}
 .easyui-accordion ul{list-style-type:none;margin:0px; padding:10px 0;}
-.easyui-accordion ul li{ padding:0px;}
-.easyui-accordion ul li a{line-height:24px;display: block;text-decoration: none}
+.easyui-accordion ul li{ padding:0;height:40px;line-height:40px;}
+.easyui-accordion ul li a{display: block;text-decoration: none;color:#a7b1c2}
 .easyui-accordion ul li div{margin:2px 0px;padding-left:20px;padding-top:2px;}
-.easyui-accordion ul li div.hover{ background:#e0ffed;cursor:pointer;}
-.easyui-accordion ul li div.hover a{color:#333;}
-.easyui-accordion ul li div.selected{background:#e0ffed;cursor:default;}
-.easyui-accordion ul li div.selected a{color:#41a369; font-weight:bold;display: block}
+.easyui-accordion ul li div.hover{ background:#263949;cursor:pointer;}
+.easyui-accordion ul li div.hover a{color:#fff;}
+.easyui-accordion ul li div.selected{background:#263949;cursor:default;}
+.easyui-accordion ul li div.selected a{color:#fff; font-weight:bold;display: block}
 .accordion-header-selected .fa{color:#fff}
+.accordion .accordion-header-selected{background:#263949;}
 .fa{margin-top: -6px;}
 .panel-title{color:#333;font-size:13px;}
+.accordion{background: #2f4050}
+.accordion-body{background: #2f4050}
+.accordion .accordion-header{background:#263949;border:none;color:#fff}
 .form-group{
     margin:10px 0;
 }
-/*login*/
+/*login*/F
 .login{
     background: url("../images/loginBg.jpg") no-repeat center center;
     background-size: cover;

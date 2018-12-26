@@ -7,7 +7,10 @@ $(function () {
         },
 
     });
-
+    var height = $(window).height()-65+"px";
+    $("#perList").datagrid({
+        height : height
+    });
     $("#perList").datagrid({
         url:genAPI('user/list'),
         method:'post',
@@ -17,7 +20,6 @@ $(function () {
         pagination:true,
         rownumbers:true,
         singleSelect:true,
-        fit:true,
         loadFilter:function (data) {
             return data.data
         },

@@ -6,7 +6,10 @@ $(function () {
             token:$.cookie('jwt')
         }
     });
-
+    var height = $(window).height()-65+"px";
+    $("#perTeam").datagrid({
+        height : height
+    });
     $("#perTeam").datagrid({
         url:genAPI('group/list'),
         method:'post',
@@ -14,9 +17,11 @@ $(function () {
         striped:true,
         nowrap:true,
         pagination:true,
+        pageNum: 1,
+        pageSize: 20,
+        pageList: [20, 40, 50],
         rownumbers:true,
         singleSelect:true,
-        fit:true,
         loadFilter:function (data) {
             return data.data
         },

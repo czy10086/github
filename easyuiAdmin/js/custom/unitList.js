@@ -190,7 +190,10 @@ $(function () {
                         })
                     }
                 }
-            }]
+            }],
+            onLoadError:function (res) {
+                layer.alert(res.message);
+            }
         });
     }
     function getunitGroupWap(type) {
@@ -303,97 +306,117 @@ $(function () {
                     console.info(rowSelect);
                     console.info(rowSelect.deputyUnitName);
                     console.info(rowSelect.deputyUnitRate);
-                    var unitName=rowSelect.unitName;
-                    $("input[name='unitNum1']").val(rowSelect.unitName);
-                    var deputyUnitIdArray=rowSelect.deputyUnitId.split(":");
-                    var deputyUnitName=rowSelect.deputyUnitName;
-                    var deputyUnitRateArray=rowSelect.deputyUnitRate.split(":");
-                    var deputyUnitNameArray=deputyUnitName.split(":");
-                    var li="";
-                    var j=1;
-                    for(var i=deputyUnitNameArray.length-1;i>=0;i--){
-                      li+="<li class=\"row-item\">\n" +
-                            "<input type='hidden' value='"+deputyUnitIdArray[i]+"'/>"+
-                            "                        <div class=\"label-wrap\">\n" +
-                            "                            <a class=\"fa fa-trash-o fa-lg fa-ico\" title=\"删除\" onclick='delUnitRow(this)'></a>\n" +
-                            "                            <label id=\"deputyUnitLabel\">副单位"+(j)+"</label>\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"ctn-wrap\">\n" +
-                            "                            <input type=\"text\" class=\"ui-input\" name='unitInput' value='"+deputyUnitNameArray[i]+"' />\n" +
-                            "                            <span class=\"descript\">=</span>\n" +
-                            "                            <input type=\"text\" class=\"ui-input rateNum\" name='rateNum' value='"+deputyUnitRateArray[i]+"' onkeyup='checkInt(this)'/>\n" +
-                            "                            <span class=\"descript baseUnitLabel\" class=\"baseUnitLabel\">"+unitName+"</span>\n" +
-                            "                        </div>\n" +
-                            "                    </li>";
-                        //console.info(li);
-                        j++;
-                    }
-                    $("#mod-form-rows").append(li);
-                    layer.open({
-                        type: 1,
-                        title:'修改多计量单位',
-                        skin: 'layui-layer-molv', //加上边框
-                        area: ['500px', '300px'], //宽高
-                        content: $('#addUnit2')
-                        ,btn: ['保存', '取消']
-                        ,yes: function(index, layero){
-                            if($("input[name='unitNum1']").val()==""){
-                                layer.msg("新增计量单位失败，基本单位不能为空");
-                                return false;
-                            }
-                            if(deputyUnitNameArray.length <= 0){
-                                layer.msg("新增计量单位失败，单位个数必须要大于1");
-                                return false;
-                            }
+                    if(rowSelect){
+                        var unitName=rowSelect.unitName;
+                        $("input[name='unitNum1']").val(rowSelect.unitName);
+                        var deputyUnitIdArray=rowSelect.deputyUnitId.split(":");
+                        var deputyUnitName=rowSelect.deputyUnitName;
+                        var deputyUnitRateArray=rowSelect.deputyUnitRate.split(":");
+                        var deputyUnitNameArray=deputyUnitName.split(":");
+                        var li="";
+                        var j=1;
+                        for(var i=deputyUnitNameArray.length-1;i>=0;i--){
+                            li+="<li class=\"row-item\">\n" +
+                                "<input type='hidden' class='deputyUnitId' value='"+deputyUnitIdArray[i]+"'/>"+
+                                "                        <div class=\"label-wrap\">\n" +
+                                "                            <a class=\"fa fa-trash-o fa-lg fa-ico\" title=\"删除\" onclick='delUnitRow(this)'></a>\n" +
+                                "                            <label id=\"deputyUnitLabel\">副单位"+(j)+"</label>\n" +
+                                "                        </div>\n" +
+                                "                        <div class=\"ctn-wrap\">\n" +
+                                "                            <input type=\"text\" class=\"ui-input\" name='unitInput' value='"+deputyUnitNameArray[i]+"' />\n" +
+                                "                            <span class=\"descript\">=</span>\n" +
+                                "                            <input type=\"text\" class=\"ui-input rateNum\" name='rateNum' value='"+deputyUnitRateArray[i]+"' onkeyup='checkInt(this)'/>\n" +
+                                "                            <span class=\"descript baseUnitLabel\" class=\"baseUnitLabel\">"+unitName+"</span>\n" +
+                                "                        </div>\n" +
+                                "                    </li>";
+                            //console.info(li);
+                            j++;
+                        }
+                        $("#mod-form-rows").append(li);
 
-                            var deputyUnits=[];
-                            for(var i=0;i<deputyUnitNameArray.length;i++){
-                                var deputyUnit={};
-                                deputyUnit["unitName"]=deputyUnitNameArray[i];
-                                deputyUnit['deputyUnitRate']=deputyUnitRateArray[i];
-                                deputyUnit['id']=deputyUnitIdArray[i];
-                                deputyUnits.push(deputyUnit);
-                            }
+                        layer.open({
+                            type: 1,
+                            title:'修改多计量单位',
+                            skin: 'layui-layer-molv', //加上边框
+                            area: ['500px', '300px'], //宽高
+                            content: $('#addUnit2')
+                            ,btn: ['保存', '取消']
+                            ,yes: function(index, layero){
 
-                            //console.info(deputyUnits);
 
-                            var data = {
-                                unitName:$("input[name='unitNum1']").val(),
-                                isGroup:type,
-                                id:rowSelect.id,
-
-                                deputyUnits:deputyUnits
-                            };
-                            $.ajax({
-                                type:"post",
-                                url:genAPI('settings/addUnit'),
-                                cache:false,
-                                dataType:"json",
-                                headers:{
-                                    "uid":$.cookie('uid'),
-                                    "token":$.cookie('jwt')
-                                },
-                                data: JSON.stringify(data),
-                                contentType : "application/json;charset=UTF-8",
-                                success:function (res) {
-                                    layer.close(index);
-                                    $("#unitList2").datagrid('reload');
-                                },
-                                error:function (res) {
-                                    layer.msg(res.message);
+                                if($("input[name='unitNum1']").val()==""){
+                                    layer.msg("新增计量单位失败，基本单位不能为空");
+                                    return false;
                                 }
-                            })
+                                if(deputyUnitNameArray.length <= 0){
+                                    layer.msg("新增计量单位失败，单位个数必须要大于1");
+                                    return false;
+                                }
+                                var unitNames =[];
+                                $("input[name='unitInput']").each(function(){
+                                    unitNames.push($(this).val());
+                                });
+                                // console.info(unitNames);
+                                var rateNums = [];
+                                $("input[name='rateNum']").each(function(){
+                                    rateNums.push($(this).val());
+                                });
+                                var deputyUnitIds = [];
+                                $(".deputyUnitId").each(function () {
+                                    deputyUnitIds.push($(this).val());
+                                })
+                                var deputyUnits=[];
+                                for(var i=0;i<unitNames.length;i++){
+                                    var deputyUnit={};
+                                    deputyUnit["unitName"]=unitNames[i];
+                                    deputyUnit['deputyUnitRate']=rateNums[i];
+                                    deputyUnit['id']=deputyUnitIds[i];
+                                    deputyUnits.push(deputyUnit);
+                                }
 
-                        }
-                        ,btn2: function(index, layero){
-                            layer.close(index);
-                        },
-                        end: function(index, layero){
-                            $("input[name='unitNum1").val("");
-                            $("input[name='unitInput']").val("");
-                            $("input[name='rateNum']").val("");
-                        }
-                    })
+                                //console.info(deputyUnits);
+
+                                var data = {
+                                    unitName:$("input[name='unitNum1']").val(),
+                                    isGroup:type,
+                                    id:rowSelect.id,
+                                    deputyUnits:deputyUnits
+                                };
+                                $.ajax({
+                                    type:"post",
+                                    url:genAPI('settings/addUnit'),
+                                    cache:false,
+                                    dataType:"json",
+                                    headers:{
+                                        "uid":$.cookie('uid'),
+                                        "token":$.cookie('jwt')
+                                    },
+                                    data: JSON.stringify(data),
+                                    contentType : "application/json;charset=UTF-8",
+                                    success:function (res) {
+                                        layer.close(index);
+                                        // location.reload();
+                                        $("#unitList2").datagrid('reload');
+                                    },
+                                    error:function (res) {
+                                        layer.msg(res.message);
+                                    }
+                                })
+
+                            }
+                            ,btn2: function(index, layero){
+                                layer.close(index);
+                            },
+                            end: function(index, layero){
+                                $("#mod-form-rows").empty();
+                                $("input[name='unitNum1").val("");
+                                $("input[name='unitInput']").val("");
+                                $("input[name='rateNum']").val("");
+                                /*location.reload();*/
+                            }
+                        })
+                    }
+
                 }
             },'-',{
                 text:'删除',
@@ -450,7 +473,8 @@ function addUnitRow(obj) {
     //Number()将对象值转为数字，否则会出现01 11 21 这种结果
     var deputyUnitText=Number($("#mod-form-rows li").length)+Number(1);
     //创建一个li对象
-    var li="<li class=\"row-item\">\n" +
+    var li="<li class=\"row-item\">" +
+        "                        <input type='hidden' value=''/>"+
         "                        <div class=\"label-wrap\">\n" +
         "                            <a class=\"fa fa-trash-o fa-lg fa-ico\" title=\"删除\" onclick='delUnitRow(this)'></a>\n" +
         "                            <label id=\"deputyUnitLabel\">副单位"+deputyUnitText+"</label>\n" +
@@ -470,6 +494,28 @@ function addUnitRow(obj) {
 
 function delUnitRow(obj) {
     $(obj).parent().parent().remove();
+    var data = {
+        id:$(obj).parents().siblings('.deputyUnitId').val()
+    };
+    $.ajax({
+        type:"post",
+        url:genAPI('settings/deleteUnit'),
+        cache:false,
+        dataType:"json",
+        headers:{
+            "uid":$.cookie('uid'),
+            "token":$.cookie('jwt')
+        },
+        data: JSON.stringify(data),
+        contentType : "application/json;charset=UTF-8",
+        success:function (res) {
+            layer.msg("删除成功！");
+            $("#unitList2").datagrid('reload');
+        },
+        error:function (res) {
+            layer.msg(res.message);
+        }
+    })
 }
 
 function checkInt(e) {

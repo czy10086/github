@@ -9,7 +9,7 @@ $(function () {
     //$(".addUser").parent().css({"color":"red","border":"2px solid red"});
 
     // table高度自适应
-    var height=(Number($(".easyui-layout").height()))*0.9;
+    var height = $(window).height()-120+"px";
     $("#customList").datagrid({
         height : height
     });
@@ -58,6 +58,9 @@ $(function () {
         striped:true,
         nowrap:true,
         pagination:true,
+        pageNum: 1,
+        pageSize: 10,
+        pageList: [20, 40, 50],
         rownumbers:true,
         singleSelect:true,
         loadFilter:function (data) {

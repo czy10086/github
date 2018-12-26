@@ -7,7 +7,7 @@ $(function () {
 
     });
     // table高度自适应
-    var height=(Number($(".easyui-layout").height()))*0.9;
+    var height = $(window).height()-120+"px";
     $("#vendorList").datagrid({
         height : height
     });
