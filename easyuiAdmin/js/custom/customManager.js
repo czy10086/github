@@ -148,7 +148,6 @@ $(function () {
 
                         }
                     })
-
                 }
             }
         }]
@@ -486,6 +485,7 @@ function customDialog() {
 
     layer.open({
         type: 1,
+        title:"客户详情",
         skin: 'layui-layer-molv', //加上边框
         area: ['680px', '480px'], //宽高
         content: $('#addCusDialog'),
