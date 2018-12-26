@@ -36,24 +36,59 @@ $(function () {
             text:'添加',
             iconCls:'fa fa-plus fa-lg',
             handler:function(){
-               // $("#action_type").val("add");
-                $("#addGroup").dialog("open");
+                $("#action_type").val("add");
                 $(".hidden-class").css("display","none");
-
+                layer.open({
+                    type: 1,
+                    title:'添加职员组',
+                    skin: 'layui-layer-molv', //加上边框
+                    area: ['500px', '300px'], //宽高
+                    content: $('#addGroup')
+                    ,btn: ['保存', '取消']
+                    ,yes: function(index, layero){
+                        addGroupSave();
+                        layer.close(index);
+                    },
+                    btn2:function (index, layero) {
+                        layer.close(index);
+                    },
+                    end:function () {
+                        $("#name").val("");
+                        $(".hidden-class").css("display","block");
+                    }
+                });
             }
         },'-',{
             text:'编辑',
             iconCls:'fa fa-pencil-square-o fa-lg',
             handler:function(){
                 $("#action_type").val("edit");
+
                 var rowSelect=$("#perTeam").datagrid("getSelected");
                 //console.info(rowSelect);
                 if(rowSelect){
-                    $("#addGroup").dialog("open");
-                    $("#id").val(rowSelect.id);
-                    $("#name").val(rowSelect.name)
+                    $("#id").val(rowSelect.id).attr("readonly",true);
+                    $("#name").val(rowSelect.name);
+
+                    layer.open({
+                        type: 1,
+                        title:'编辑职员组',
+                        skin: 'layui-layer-molv', //加上边框
+                        area: ['500px', '300px'], //宽高
+                        content: $('#addGroup')
+                        ,btn: ['保存', '取消']
+                        ,yes: function(index, layero){
+                            addGroupSave();
+                            layer.close(index);
+                        },
+                        btn2:function (index, layero) {
+                            layer.close(index);
+                        },
+                        end:function () {
+                            $("#name").val("");
+                        }
+                    });
                 }else{
-                   // $.messager.alert('提醒','请选中一行进行编辑');
                     layer.alert("请选中一行进行编辑",{skin:'layui-layer-molv'});
                 }
 
@@ -62,11 +97,8 @@ $(function () {
             text:'删除',
             iconCls:'fa fa-remove fa-lg',
             handler:function(){
-
                 var rowSelect=$("#perTeam").datagrid("getSelected");
-               // console.info(rowSelect);
                 if(!rowSelect){
-                    //$.messager.alert('提醒','请选中一行进行删除');
                     layer.alert("请选中一行进行删除",{skin:'layui-layer-molv'});
                     return false;
                 }
@@ -99,18 +131,34 @@ $(function () {
             iconCls:'fa fa-get-pocket fa-lg',
             handler:function() {
                 var rowSelect = $("#perTeam").datagrid("getSelected");
-                //console.info(rowSelect);
+
                 if (!rowSelect) {
-                    //$.messager.alert('提醒', '请选中一行进行删除');
                     layer.alert("请选中一行进行删除",{skin:'layui-layer-molv'});
                     return false;
                 }
                 var data = {
                     groupId: rowSelect.id
-
                 };
                 if (rowSelect) {
-                    $("#resourceGroup").dialog('open');
+
+                    layer.open({
+                        type: 1,
+                        title:'获取职员组',
+                        skin: 'layui-layer-molv', //加上边框
+                        area: ['500px', '300px'], //宽高
+                        content: $('#resourceGroup')
+                        ,btn: ['保存', '取消']
+                        ,yes: function(index, layero){
+                            resourceGroupSave();
+                            layer.close(index);
+                        },
+                        btn2:function (index, layero) {
+                            layer.close(index);
+                        },
+                        end:function () {
+
+                        }
+                    });
                     var setting = {
                         check: {
                             enable: true ,//显示复选框
@@ -186,14 +234,10 @@ function addGroupSave(){
         data: JSON.stringify(data),
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
-
-            $("#addGroup").dialog("close");
+            //layer.close(index);
             $("#perTeam").datagrid('reload');
         }
     })
-}
-function closed() {
-    $("#addGroup").dialog('close');
 }
 function resourceGroupSave() {
     var zTreeObj = $.fn.zTree.getZTreeObj("groupTree");
@@ -228,7 +272,4 @@ function resourceGroupSave() {
             $("#perTeam").datagrid('reload');
         }
     })
-}
-function resourceGroupclosed() {
-    $("#resourceGroup").dialog('close');
 }
