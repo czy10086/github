@@ -258,6 +258,7 @@ function vendorDialog() {
                             openSelectAddress(value);
                             var sec =  layer.open({
                                 type: 1,
+                                title:"新增联系地址",
                                 skin: 'layui-layer-molv', //加上边框
                                 area: ['600px', '388px'], //宽高
                                 content: $('#addressDialog')
@@ -308,17 +309,6 @@ function vendorDialog() {
                         textField:'val' ,
                         required:true ,
                         panelHeight:66
-                        /* onSelect:function (record) {
-                            console.info(record);
-                            var row = $("#editTab").datagrid('getSelected');
-                            var rowIndex = $("#editTab").datagrid('getRowIndex',row);
-                            var ed = $("#editTab").datagrid('getEditor',{index:rowIndex,field:'first'});
-                            if(record.val=='是'){
-
-                            }else if(record.val=='否'){
-
-                            }
-                        }*/
                     }
                 }
             }
@@ -399,6 +389,7 @@ function vendorDialog() {
 
     layer.open({
         type: 1,
+        title:"供应商详情",
         skin: 'layui-layer-molv', //加上边框
         area: ['680px', '480px'], //宽高
         content: $('#addVendorDialog'),
