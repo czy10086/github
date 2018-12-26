@@ -268,7 +268,6 @@ function resourceGroupSave() {
         data: JSON.stringify(data),
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
-
             $("#resourceGroup").dialog("close");
             $("#perTeam").datagrid('reload');
         }
