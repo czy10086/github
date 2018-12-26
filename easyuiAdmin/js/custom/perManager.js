@@ -47,30 +47,53 @@ $(function () {
             text:'添加',
             iconCls:'fa fa-plus fa-lg',
             handler:function(){
-                var username = $("#username").val(""),
-                    password = $("#password").val(''),
-                    name = $("#name").val(""),
-                    sex = $("#sex").val(""),
-                    phone = $("#phone").val(""),
-                    email = $("#email").val("");
                 $("#action_type").val("add");
-                $("#addRegister").dialog('open');
-
+                $("#username").val("");
+                $("#password").val("");
+                $("#name").val("");
+                $("#sex").val("");
+                $("#phone").val("");
+                $("#email").val("");
+                layer.open({
+                    type: 1,
+                    title:"添加职员",
+                    skin: 'layui-layer-molv', //加上边框
+                    area: ['680px', '480px'], //宽高
+                    content: $('#addRegister'),
+                    btn: ['保存', '取消'],
+                    yes: function(index, layero){
+                        //提交保存
+                        sumbit();
+                        layer.close(index);
+                    }
+                    ,btn2: function(index, layero){
+                        layer.close(index);
+                    },
+                    end:function () {
+                            $("#username").val("");
+                            $("#password").val('');
+                            $("#name").val("");
+                            $("#sex").val("");
+                            $("#phone").val("");
+                            $("#email").val("");
+                    }
+                });
             }
         },'-',{
             text:'修改',
             iconCls:'fa fa-pencil-square-o fa-lg',
             handler:function(){
-
                 $("#action_type").val("update");
-
                 var rowSelect=$("#perList").datagrid("getSelected");
                // console.info(rowSelect);
-                var data={
-                    "uid" : rowSelect.uid
-                };
+                if(!rowSelect){
+                    layer.alert('请选中一行进行修改',{skin:'layui-layer-molv'});
+                    return false;
+                }
                if(rowSelect){
-                   $("#addRegister").dialog('open');
+                   var data = {
+                       "uid" : rowSelect.uid
+                   };
                    $.ajax({
                        type:"post",
                        url:genAPI('user/userInfo'),
@@ -79,7 +102,6 @@ $(function () {
                        data:JSON.stringify(data),
                        contentType : "application/json;charset=UTF-8",
                        success:function (res) {
-                          // console.info(res);
                            $(".hidden-class").css("display","none");
                            $("#username").val(res.data.username);
                            $("#name").val(res.data.realName);
@@ -87,12 +109,36 @@ $(function () {
                            $("#password").val(res.data.password);
                            $("#email").val(res.data.email);
                            $("#phone").val(res.data.phone);
-                       },error:function () {
-
+                       },error:function (res) {
+                           layer.msg(res.message)
                        }
-                   })
+                   });
+                   layer.open({
+                       type: 1,
+                       title:"修改职员",
+                       skin: 'layui-layer-molv', //加上边框
+                       area: ['680px', '480px'], //宽高
+                       content: $('#addRegister'),
+                       btn: ['保存', '取消'],
+                       yes: function(index, layero){
+                           //提交保存
+                           sumbit();
+                           layer.close(index);
+                       }
+                       ,btn2: function(index, layero){
+                           layer.close(index);
+                       },
+                       end:function () {
+                           $(".hidden-class").css("display","block");
+                           $("#username").val("");
+                           $("#password").val("");
+                           $("#name").val("");
+                           $("#sex").val("");
+                           $("#phone").val("");
+                           $("#email").val("");
+                       }
+                   });
                }
-
             }
         },'-',{
             text:'重置密码',
@@ -112,7 +158,7 @@ $(function () {
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                             //console.info(res);
-
+                            layer.msg('密码重置成功')
 
                         },error:function () {
 
@@ -180,11 +226,29 @@ $(function () {
                 if(!rowSelect){
                     layer.alert('请选中一行进行分配',{skin:'layui-layer-molv'});
                 }
-                var data = {
-                    uid : rowSelect.uid
-                };
+
                 if(rowSelect){
-                    $("#treeGroup").dialog('open');
+                   // $("#treeGroup").dialog('open');
+                    layer.open({
+                        type: 1,
+                        title:"分配组",
+                        skin: 'layui-layer-molv', //加上边框
+                        area: ['680px', '480px'], //宽高
+                        content: $('#treeGroup'),
+                        btn: ['保存', '取消'],
+                        yes: function(index, layero){
+                            //提交保存
+                            treeGroupSave();
+                            layer.close(index);
+                        }
+                        ,btn2: function(index, layero){
+                            layer.close(index);
+                        },
+                        end:function () {
+
+                        }
+                    });
+
                     var setting = {
                         check: {
                             enable: true ,//显示复选框
@@ -198,6 +262,9 @@ $(function () {
                                 rootPId: ""
                             }
                         }
+                    };
+                    var data = {
+                        uid : rowSelect.uid
                     };
                     $.ajax({
                         type:"post",
@@ -285,9 +352,6 @@ function sumbit() {
         }
     })
 }
-function closed() {
-    $("#addRegister").dialog('close');
-}
 
 function treeGroupSave() {
     var zTreeObj = $.fn.zTree.getZTreeObj("groupzTree");
@@ -322,6 +386,3 @@ function treeGroupSave() {
     })
 }
 
-function treeGroupclosed() {
-    $("#treeGroup").dialog('close');
-}
