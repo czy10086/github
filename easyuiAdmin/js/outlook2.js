@@ -1,8 +1,5 @@
 ﻿
 $(function(){
-	/*$(".header").width($(window).width()-180+'px');
-	$(".main").height($(window).height()+'px');
-	$(".tabs-wrap").width($(window).width()-180+'px');*/
 	InitLeftMenu();
     tabCloseMenu();
     tabCloseEven();
