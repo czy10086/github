@@ -31,11 +31,24 @@ $(function () {
             handler:function(){
                 var row = $('#roleTable').datagrid('getSelected');
                 // console.info(row);
-                var formdata = {
-                    roleId:row.id
-                };
+
                 if(row){
-                    $("#treeTable").dialog('open');
+                    layer.open({
+                        type: 1,
+                        title:"权限管理",
+                        skin: 'layui-layer-molv', //加上边框
+                        area: ['680px', '480px'], //宽高
+                        content:$("#treeTable"),
+                        btn: ['保存', '取消'],
+                        yes: function(index, layero){
+                            //提交保存
+                            roleSave();
+                            layer.close(index);
+                        }
+                        ,btn2: function(index, layero){
+                            layer.close(index);
+                        }
+                    });
                     var setting = {
                         check: {
                             enable: true ,//显示复选框
@@ -49,6 +62,9 @@ $(function () {
                                 rootPId: ""
                             }
                         }
+                    };
+                    var formdata = {
+                        roleId:row.id
                     };
                     $.ajax({
                         type:"post",
@@ -67,10 +83,11 @@ $(function () {
                                 var zTreeObj = $.fn.zTree.init($("#rolezTree"),setting,res.data);
                                 var rootNode_0 = zTreeObj.getNodeByParam('pid',0,null);
                                 zTreeObj.expandNode(rootNode_0, true, false, false, false);
+                            }else{
+                                layer.msg(res.message)
                             }
                         }
                     });
-
 
                 }
 
@@ -110,13 +127,11 @@ function roleSave() {
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
             if(res.code==200){
-
-                $("#treeTable").dialog('close');
-
+                layer.msg("权限配置成功！");
+            }else{
+                layer.msg(res.message);
             }
         }
     })
 }
-function closedRole() {
-    $("#treeTable").dialog('close');
-}
+
