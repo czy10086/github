@@ -20,7 +20,7 @@ $(function () {//ready()文档加载后
         },
         columns:[[
             { field:'id',title:'仓库id',width:20},
-            { field:'code',title:'仓库编码',width:100,hidden:true},
+            { field:'code',title:'仓库编码',width:100},
             { field:'name',title:'仓库名称',width:100},
             { field:'status',title:'状态',width:100,formatter: function(value,row,index){
                     if (value=="1"){
@@ -34,7 +34,6 @@ $(function () {//ready()文档加载后
             text:'添加',
             iconCls:'fa fa-plus fa-lg',
             handler:function(){//?
-                //$("#addWareH").dialog("open");//?
                 layer.open({
                     type: 1,
                     title:"新增",
@@ -60,49 +59,84 @@ $(function () {//ready()文档加载后
                 $("#action_type").val("edit");
                 var rowSelect=$("#warehouseManage").datagrid("getSelected");
                 if(rowSelect){//?
-                    $("#addWareH").dialog("open");
-                    $("#id").val(rowSelect.id);
-                    $("#code").val(rowSelect.code);
-                    $("#name").val(rowSelect.name)
+                    $("#id").val(rowSelect.id).attr("readonly",true);//?
+                    $("#name").val(rowSelect.name);
+                    $("#code").val(rowSelect.code)
+                    layer.open({
+                        type: 1,
+                        title:"编辑",
+                        skin: 'layui-layer-molv', //加上边框
+                        area: ['350px', '300px'], //宽高
+                        content: $('#addWareH'),
+                        btn: ['保存', '取消'],
+                        yes: function(index, layero){
+                            //提交保存
+                            addWareHSave();
+                            layer.close(index);
+                        }
+                        ,btn2: function(index, layero){
+                            layer.close(index);
+                        },
+                        end:function () {
+                            $("#name").val("");//?
+                        }
+                    });
+
                 }else{
                     layer.alert("请选中一行进行编辑",{skin:'layui-layer-molv'});
                 }
             }
         },'-',{
-            text:'删除',
-            iconCls:'fa fa-remove fa-lg',
+            text:'冻结仓库',
+            iconCls:'fa fa-warning fa-lg',
             handler:function(){
-
                 var rowSelect=$("#warehouseManage").datagrid("getSelected");
-                // console.info(rowSelect);
-                if(!rowSelect){
-                    //$.messager.alert('提醒','请选中一行进行删除');
-                    layer.alert("请选中一行进行删除",{skin:'layui-layer-molv'});
-                    return false;
-                }
-                var data={
-                    groupId:rowSelect.id
+                var data = {
+                    storageId : rowSelect.id
                 };
                 if(rowSelect){
                     $.ajax({
                         type:"post",
-                        url:genAPI(''),
+                        url:genAPI('settings/freezeStorage'),
                         cache:false,
                         dataType:"json",
-                        headers:{
-                            "uid":$.cookie('uid'),
-                            "token":$.cookie('jwt')
-                        },
-                        data: JSON.stringify(data),
+                        data:JSON.stringify(data),
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
-                            layer.msg("删除成功！");
-                            $("#perTeam").datagrid('reload');
+                            // console.info(res);
+                            layer.msg("成功冻结该仓库");
+                            $('#warehouseManage').datagrid('reload');
+                        },error:function () {
+
                         }
                     })
                 }
+            }
+        },'-',{
+            text:'启用仓库',
+            iconCls:'fa fa-check-circle fa-lg',
+            handler:function(){
+                var rowSelect=$("#warehouseManage").datagrid("getSelected");
+                var data = {
+                    storageId : rowSelect.id
+                };
+                if(rowSelect){
+                    $.ajax({
+                        type:"post",
+                        url:genAPI('settings/unfreezeStorage'),
+                        cache:false,
+                        dataType:"json",
+                        data:JSON.stringify(data),
+                        contentType : "application/json;charset=UTF-8",
+                        success:function (res) {
+                            // console.info(res);
+                            layer.msg("该仓库已成功启用");
+                            $('#warehouseManage').datagrid('reload');
+                        },error:function () {
 
-
+                        }
+                    })
+                }
             }
         }
         ]
@@ -133,8 +167,9 @@ function addWareHSave(){
     }else{
         url=genAPI('settings/editStorage');
         data = {
-            // id:$("#id").val(),
-            name:$("#name").val()
+            id:$("#id").val(),
+            name:$("#name").val(),
+            code:$("#code").val()
         }
     }
     $.ajax({
