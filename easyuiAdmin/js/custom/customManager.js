@@ -392,7 +392,7 @@ function customDialog() {
             },
             { field:'first',
                 title:'首要联系人',
-                width : 50,
+                width : 100,
                 hidden:false,
                 formatter:function(value , record , index){
                     if(value == 1){
@@ -520,7 +520,7 @@ function submitCustom() {
     var data={};
     if(actionType == "add"){
         url=genAPI('settings/addCustomer');
-        console.info(rowsData);
+        //console.info(rowsData);
          data = {
             code:$("#code").val(),
             name:$("#name").val(),

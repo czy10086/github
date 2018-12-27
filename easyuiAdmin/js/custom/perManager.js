@@ -147,10 +147,14 @@ $(function () {
             iconCls:'fa fa-refresh fa-lg',
             handler:function(){
                 var rowSelect=$("#perList").datagrid("getSelected");
-                var data = {
-                    uid : rowSelect.uid
-                };
+                if(!rowSelect){
+                    layer.alert('请选中一行进行操作',{skin:'layui-layer-molv'});
+                }
+
                 if(rowSelect){
+                    var data = {
+                        uid : rowSelect.uid
+                    };
                     $.ajax({
                         type:"post",
                         url:genAPI('user/resetPwd'),
@@ -160,7 +164,12 @@ $(function () {
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                             //console.info(res);
-                            layer.msg('密码重置成功')
+                            if(res.code==200){
+                                layer.msg('密码重置成功')
+                            }else{
+                                layer.msg(res.message)
+                            }
+
 
                         },error:function () {
 
@@ -173,10 +182,14 @@ $(function () {
             iconCls:'fa fa-warning fa-lg',
             handler:function(){
                 var rowSelect=$("#perList").datagrid("getSelected");
-                var data = {
-                    uid : rowSelect.uid
-                };
+
+                if(!rowSelect){
+                    layer.alert('请选中一行进行操作',{skin:'layui-layer-molv'});
+                }
                 if(rowSelect){
+                    var data = {
+                        uid : rowSelect.uid
+                    };
                     $.ajax({
                         type:"post",
                         url:genAPI('user/freeze'),
@@ -186,8 +199,13 @@ $(function () {
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                            // console.info(res);
-                            layer.msg("成功冻结该账号");
-                            $('#perList').datagrid('reload');
+                            if(res.code==200){
+                                layer.msg("成功冻结该账号");
+                                $('#perList').datagrid('reload');
+                            }else{
+                                layer.msg(res.message)
+                            }
+
                         },error:function () {
 
                         }
@@ -199,10 +217,14 @@ $(function () {
             iconCls:'fa fa-check-circle fa-lg',
             handler:function(){
                 var rowSelect=$("#perList").datagrid("getSelected");
-                var data = {
-                    uid : rowSelect.uid
-                };
+
+                if(!rowSelect){
+                    layer.alert('请选中一行进行操作',{skin:'layui-layer-molv'});
+                }
                 if(rowSelect){
+                    var data = {
+                        uid : rowSelect.uid
+                    };
                     $.ajax({
                         type:"post",
                         url:genAPI('user/unfreeze'),
@@ -212,8 +234,13 @@ $(function () {
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                            // console.info(res);
-                            layer.msg("该账号已成功启用");
-                            $('#perList').datagrid('reload');
+                            if(res.code==200){
+                                layer.msg("该账号已成功启用");
+                                $('#perList').datagrid('reload');
+                            }else{
+                                layer.msg(res.message)
+                            }
+
                         },error:function () {
 
                         }
@@ -230,7 +257,6 @@ $(function () {
                 }
 
                 if(rowSelect){
-                   // $("#treeGroup").dialog('open');
                     layer.open({
                         type: 1,
                         title:"分配组",
@@ -285,6 +311,8 @@ $(function () {
                                 var zTreeObj = $.fn.zTree.init($("#groupzTree"),setting,res.data);
                                 var rootNode_0 = zTreeObj.getNodeByParam('pid',0,null);
                                 zTreeObj.expandNode(rootNode_0, true, false, false, false);
+                            }else{
+                                layer.msg(res.message)
                             }
                         }
                     });
@@ -297,17 +325,14 @@ $(function () {
 //提交添加修改表单
 function sumbit() {
     if($("#username").val()==""){
-       // $.messager.alert('提醒','请输入用户名');
         layer.alert('请输入用户名',{skin:'layui-layer-molv'});
         return false;
     }
     if($("#name").val()==""){
-        //$.messager.alert('提醒','请输入姓名');
         layer.alert("请输入姓名",{skin:'layui-layer-molv'});
         return false;
     }
     if($("#sex").val()==""){
-        //$.messager.alert('提醒','请输入性别');
         layer.alert('请输入性别',{skin:'layui-layer-molv'});
         return false;
     }
@@ -347,8 +372,13 @@ function sumbit() {
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
            // console.info(res);
-            $("#addRegister").dialog('close');
-            $('#perList').datagrid('reload');
+            //$("#addRegister").dialog('close');
+            if(res.code==200){
+                $('#perList').datagrid('reload');
+            }else{
+                layer.msg(res.message)
+            }
+
         },error:function () {
 
         }
@@ -358,7 +388,6 @@ function sumbit() {
 function treeGroupSave() {
     var zTreeObj = $.fn.zTree.getZTreeObj("groupzTree");
     var nodes = zTreeObj.getCheckedNodes(true);
-    //console.info(nodes);
     var v="";
     var arr = new Array("");
     for(var i=0;i<nodes.length;i++){
@@ -380,8 +409,14 @@ function treeGroupSave() {
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
             //console.info(res);
-            $("#treeGroup").dialog('close');
-            $('#perList').datagrid('reload');
+            if(res.code==200){
+                layer.msg("分配组成功");
+
+                $('#perList').datagrid('reload');
+            }else{
+                layer.msg(res.message)
+            }
+
         },error:function () {
 
         }

@@ -141,8 +141,12 @@ function getData(type,searTxt) {
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                             //console.info(res);
-                            layer.msg('启用成功');
-                            $("#categoryList").treegrid('reload');
+                            if(res.code==200){
+                                layer.msg('启用成功');
+                                $("#categoryList").treegrid('reload');
+                            }else{
+                                layer.msg(res.message)
+                            }
 
                         },error:function () {
 
@@ -171,8 +175,13 @@ function getData(type,searTxt) {
                         contentType: "application/json;charset=UTF-8",
                         success: function (res) {
                             //console.info(res);
-                            layer.msg('禁用成功');
-                            $("#categoryList").treegrid('reload');
+                            if(res.code==200){
+                                layer.msg('禁用成功');
+                                $("#categoryList").treegrid('reload');
+                            }else{
+                                layer.msg(res.message)
+                            }
+
 
                         }, error: function () {
 
@@ -221,8 +230,11 @@ function saveCate() {
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
             //console.info(res);
-            $("#categoryList").treegrid('reload');
-
+            if(res.code==200){
+                $("#categoryList").treegrid('reload');
+            }else{
+                layer.msg(res.message)
+            }
 
         },error:function () {
 

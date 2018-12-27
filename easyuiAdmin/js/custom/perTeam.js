@@ -119,8 +119,13 @@ $(function () {
                       data: JSON.stringify(data),
                       contentType : "application/json;charset=UTF-8",
                       success:function (res) {
-                            layer.msg("删除成功！");
-                          $("#perTeam").datagrid('reload');
+                          if(res.code==200){
+                              layer.msg("删除成功！");
+                              $("#perTeam").datagrid('reload');
+                          }else{
+                              layer.msg(res.message)
+                          }
+
                       }
                   })
                 }
@@ -191,6 +196,8 @@ $(function () {
                                 var zTreeObj = $.fn.zTree.init($("#groupTree"),setting,res.data);
                                 var rootNode_0 = zTreeObj.getNodeByParam('pid',0,null);
                                 zTreeObj.expandNode(rootNode_0, true, false, false, false);
+                            }else{
+                                layer.msg(res.message)
                             }
 
                         }
@@ -236,7 +243,12 @@ function addGroupSave(){
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
             //layer.close(index);
-            $("#perTeam").datagrid('reload');
+            if(res.code==200){
+                $("#perTeam").datagrid('reload');
+            }else{
+                layer.msg(res.message)
+            }
+
         }
     })
 }
@@ -268,7 +280,12 @@ function resourceGroupSave() {
         data: JSON.stringify(data),
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
-            $("#perTeam").datagrid('reload');
+            if(res.code==200){
+                $("#perTeam").datagrid('reload');
+            }else{
+                layer.msg(res.message)
+            }
+
         }
     })
 }

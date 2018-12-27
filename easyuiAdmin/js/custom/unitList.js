@@ -6,11 +6,7 @@ $(function () {
         }
 
     });
-    // table高度自适应
- /*   var height=(Number($(".easyui-layout").height()))*0.9;
-    $("#unitList").datagrid({
-        height : height
-    });*/
+
     getunitWap(0,'');
     $(".navTab ul li").on("click",function () {
         $(this).stop().addClass("active").siblings().stop().removeClass("active");
@@ -78,11 +74,16 @@ $(function () {
                                 data: JSON.stringify(data),
                                 contentType : "application/json;charset=UTF-8",
                                 success:function (res) {
-                                    layer.close(index);
-                                    $("#unitList1").datagrid('reload');
+                                    if(res.code==200){
+                                        layer.close(index);
+                                        $("#unitList1").datagrid('reload');
+                                    }else{
+                                        layer.msg(res.message);
+                                    }
+
                                 },
-                                error:function (res) {
-                                    layer.msg(res.message);
+                                error:function () {
+
                                 }
                             })
 
@@ -137,12 +138,17 @@ $(function () {
                                 data: JSON.stringify(data),
                                 contentType : "application/json;charset=UTF-8",
                                 success:function (res) {
-                                    layer.msg("修改成功！");
-                                    layer.close(index);
-                                    $("#unitList1").datagrid('reload');
+                                    if(res.code==200){
+                                        layer.msg("修改成功！");
+                                        layer.close(index);
+                                        $("#unitList1").datagrid('reload');
+                                    }else{
+                                        layer.msg(res.message)
+                                    }
+
                                 },
-                                error:function (res) {
-                                    layer.msg(res.message);
+                                error:function () {
+
                                 }
                             })
 
@@ -181,11 +187,16 @@ $(function () {
                             data: JSON.stringify(data),
                             contentType : "application/json;charset=UTF-8",
                             success:function (res) {
-                                layer.msg("删除成功！");
-                                $("#unitList1").datagrid('reload');
+                                if(res.code==200){
+                                    layer.msg("删除成功！");
+                                    $("#unitList1").datagrid('reload');
+                                }else{
+                                    layer.msg(res.message)
+                                }
+
                             },
-                            error:function (res) {
-                                layer.msg(res.message);
+                            error:function () {
+
                             }
                         })
                     }
@@ -275,11 +286,16 @@ $(function () {
                                 data: JSON.stringify(data),
                                 contentType : "application/json;charset=UTF-8",
                                 success:function (res) {
-                                    layer.close(index);
-                                    $("#unitList2").datagrid('reload');
+                                    if(res.code==200){
+                                        layer.close(index);
+                                        $("#unitList2").datagrid('reload');
+                                    }else{
+                                        layer.msg(res.message)
+                                    }
+
                                 },
-                                error:function (res) {
-                                    layer.msg(res.message);
+                                error:function () {
+
                                 }
                             })
                         }
@@ -374,7 +390,6 @@ $(function () {
                                     deputyUnits.push(deputyUnit);
                                 }
 
-                                //console.info(deputyUnits);
 
                                 var data = {
                                     unitName:$("input[name='unitNum1']").val(),
@@ -394,12 +409,17 @@ $(function () {
                                     data: JSON.stringify(data),
                                     contentType : "application/json;charset=UTF-8",
                                     success:function (res) {
-                                        layer.close(index);
-                                        // location.reload();
-                                        $("#unitList2").datagrid('reload');
+                                        if(res.code==200){
+                                            layer.close(index);
+                                            // location.reload();
+                                            $("#unitList2").datagrid('reload');
+                                        }else{
+                                            layer.msg(res.message);
+                                        }
+
                                     },
-                                    error:function (res) {
-                                        layer.msg(res.message);
+                                    error:function () {
+
                                     }
                                 })
 
@@ -445,11 +465,16 @@ $(function () {
                             data: JSON.stringify(data),
                             contentType : "application/json;charset=UTF-8",
                             success:function (res) {
-                                layer.msg("删除成功！");
-                                $("#unitList2").datagrid('reload');
+                                if(res.code==200){
+                                    layer.msg("删除成功！");
+                                    $("#unitList2").datagrid('reload');
+                                }else{
+                                    layer.msg(res.message)
+                                }
+
                             },
-                            error:function (res) {
-                                layer.msg(res.message);
+                            error:function () {
+
                             }
                         })
                     }
@@ -509,11 +534,16 @@ function delUnitRow(obj) {
         data: JSON.stringify(data),
         contentType : "application/json;charset=UTF-8",
         success:function (res) {
-            layer.msg("删除成功！");
-            $("#unitList2").datagrid('reload');
+            if(res.code==200){
+                layer.msg("删除成功！");
+                $("#unitList2").datagrid('reload');
+            }else{
+                layer.msg(res.message)
+            }
+
         },
-        error:function (res) {
-            layer.msg(res.message);
+        error:function () {
+
         }
     })
 }

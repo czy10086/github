@@ -11,7 +11,6 @@ $(function () {//ready()文档加载后
         fitColumns:true,
         striped:true,
         nowrap:true,
-        pagination:true,
         rownumbers:true,
         singleSelect:true,
         fit:true,
@@ -59,9 +58,10 @@ $(function () {//ready()文档加载后
                 $("#action_type").val("edit");
                 var rowSelect=$("#warehouseManage").datagrid("getSelected");
                 if(rowSelect){//?
+                    $(".hidden-class").css("display","none");
                     $("#id").val(rowSelect.id).attr("readonly",true);//?
                     $("#name").val(rowSelect.name);
-                    $("#code").val(rowSelect.code)
+                    $("#code").val(rowSelect.code).attr("readonly",true);
                     layer.open({
                         type: 1,
                         title:"编辑",
@@ -91,10 +91,13 @@ $(function () {//ready()文档加载后
             iconCls:'fa fa-warning fa-lg',
             handler:function(){
                 var rowSelect=$("#warehouseManage").datagrid("getSelected");
-                var data = {
-                    storageId : rowSelect.id
-                };
+                if(!rowSelect){
+                    layer.alert('请选中一行进行操作',{skin:'layui-layer-molv'});
+                }
                 if(rowSelect){
+                    var data = {
+                        storageId : rowSelect.id
+                    };
                     $.ajax({
                         type:"post",
                         url:genAPI('settings/freezeStorage'),
@@ -104,8 +107,13 @@ $(function () {//ready()文档加载后
                         contentType : "application/json;charset=UTF-8",
                         success:function (res) {
                             // console.info(res);
-                            layer.msg("成功冻结该仓库");
-                            $('#warehouseManage').datagrid('reload');
+                            if(res.code==200){
+                                layer.msg("成功冻结该仓库");
+                                $('#warehouseManage').datagrid('reload');
+                            }else{
+                                layer.msg(res.message);
+                            }
+
                         },error:function () {
 
                         }
@@ -117,10 +125,13 @@ $(function () {//ready()文档加载后
             iconCls:'fa fa-check-circle fa-lg',
             handler:function(){
                 var rowSelect=$("#warehouseManage").datagrid("getSelected");
-                var data = {
-                    storageId : rowSelect.id
-                };
+                if(!rowSelect){
+                    layer.alert('请选中一行进行操作',{skin:'layui-layer-molv'});
+                }
                 if(rowSelect){
+                    var data = {
+                        storageId : rowSelect.id
+                    };
                     $.ajax({
                         type:"post",
                         url:genAPI('settings/unfreezeStorage'),
