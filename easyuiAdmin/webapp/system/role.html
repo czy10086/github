@@ -5,6 +5,7 @@
 	<title>jQuery EasyUI</title>
 	<link rel="stylesheet" type="text/css" href="../../css/easyui/themes/bootstrap/easyui.css" />
 	<link rel="stylesheet" type="text/css" href="../../css/easyui/themes/icon.css"/>
+	<link rel="stylesheet" href="../../js/plugins/layer/theme/default/layer.css">
 	<link rel="stylesheet" type="text/css" href="../../css/icon.css" />
 	<link rel="stylesheet" href="../../css/font-awesome/font-awesome.css">
 	<link rel="stylesheet" href="../../css/ztree/zTreeStyle.css">
@@ -15,6 +16,7 @@
 	<script src="../../js/common/jquery.cookie.js"></script>
 	<script src="../../js/common/ajax-object.js"></script>
 	<script src="../../js/plugins/jquery.ztree.all.min.js"></script>
+	<script type="text/javascript" src="../../js/plugins/layer/layer.js"></script>
 	<script src="../../js/common/ztree-object.js"></script>
 	<script src="../../config.js"></script>
 	<script src="../../js/system/role.js"></script>
@@ -32,12 +34,9 @@
 <div class="easyui-layout" data-options="region:'center',fit:true" style="height:100%">
 	<table id="roleTable"></table>
 </div>
-<div id="treeTable" class="easyui-dialog"  style="width:300px;height:400px;" data-options="modal:true,title:'权限配置',closed:true,buttons:'#roleBtn'">
+<div id="treeTable">
 	<ul id="rolezTree" class="ztree tree-box" style="width: 250px !important;"></ul>
 </div>
-<div id="roleBtn">
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="roleSave()" id="roleSave">保存</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closedRole()">关闭</a>
-</div>
+
 </body>
 </html>
