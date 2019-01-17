@@ -146,7 +146,7 @@ $(function () {
                             $("#cardNo").val(res.data.customer.cardNo);
                             $("#receiveFunds1").val(res.data.customer.receiveFunds1);
                             $("#periodReceiveFunds1").val(res.data.customer.periodReceiveFunds1);
-                            $("#employee").combobox('setValue',res.data.customer.employee);
+                            $("#employee").combobox('setValue',rowSelect.employeeName);
                         },error:function () {
 
                         }

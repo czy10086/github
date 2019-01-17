@@ -84,6 +84,9 @@ function getData(type,searTxt) {
                     }
                     ,btn2: function(index, layero){
                         layer.close(index);
+                    },
+                    end:function () {
+                        $("input[name='name']").val("");
                     }
                 });
             }
@@ -116,6 +119,9 @@ function getData(type,searTxt) {
                         }
                         ,btn2: function(index, layero){
                             layer.close(index);
+                        },
+                        end:function () {
+                            $("input[name='name']").val("");
                         }
                     });
                 }else{
@@ -199,7 +205,7 @@ function getData(type,searTxt) {
 // 新增保存
 function saveCate() {
     if($("#name").val()==""){
-        layer.alert("请输入组名",{skin:'layui-layer-molv'});
+        layer.msg("请输入组名",{skin:'layui-layer-molv'});
         return false;
     }
     var actionType=$("#action_type").val();
