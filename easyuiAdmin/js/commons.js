@@ -68,7 +68,7 @@ $(function () {
                 var opts = dg.datagrid('options');
                 opts.editIndex = param.index;
                 var fields = dg.datagrid('getColumnFields',true).concat(dg.datagrid('getColumnFields'));
-                console.info(fields);
+                //console.info(fields);
                 var colNum;
                 for(var i=0; i<fields.length; i++){
                     var col = dg.datagrid('getColumnOption', fields[i]);
@@ -94,16 +94,21 @@ $(function () {
                         var code = e.keyCode || e.which;
                         var opts = dg.datagrid('options');
                         if(code == 13) {
-                            if(fields[colNum+1]){
-                                opts.onClickCell.call(dg, param.index, fields[colNum+1])
+                            var nextColNum = colNum + 1;
+                            var nextField = dg.datagrid('getColumnOption', fields[nextColNum]);
+                            console.info(nextField);
+                            while(nextColNum ++, nextColNum < fields.length && nextField.editor == undefined){
+                                nextField = dg.datagrid('getColumnOption', fields[nextColNum]);
+                            }
+                            if(nextField.editor != undefined){
+                                opts.onClickCell.call(dg, param.index, nextField.field)
                             } else {
                                 if(opts.lastFieldFun != undefined) {
-                                    opts.lastFieldFun(dg, param.index, fields[colNum]);
+                                    opts.lastFieldFun(dg, param.index, nextField.field);
                                 }
                             }
                         }
                     });
-
                 }
                 for(var i=0; i<fields.length; i++){
                     var col = dg.datagrid('getColumnOption', fields[i]);
@@ -135,33 +140,84 @@ $(function () {
                     opts.oldOnClickCell.call(this, index, field);
                 }
             });
+        },
+
+        statistics: function(jq, field) {
+            return jq.each(function(){
+                var dg = $(this);
+                var data = dg.datagrid("getData");
+                var sum = 0;
+                if(data.rows){
+                    $.each(data.rows, function(i, n){
+                        //sum += n[field]*1;
+                        sum = add(sum,n[field]);
+                    });
+                    data.footer[0][field] = Number(String(sum).replace(/^(.*\..{4}).*$/,"$1"));
+                    dg.datagrid("reloadFooter");
+                }
+
+          })
         }
+
     });
 
-   /* $.extend($.fn.datagrid.defaults.editors, {
-        searchbox: {
-            init: function(container, options){
-                var input = $('<input class="addressDialog easyui-searchbox" data-options="searcher:doDialog"/>').appendTo(container);
-                return input.searchbox(options);
-            },
-            destroy: function(target){
-                $(target).remove();
-            },
-            getValue: function(target){
-                return $(target).val();
-            },
-            setValue: function(target, value){
-                $(target).val(value);
-            },
-            resize: function(target, width){
-                $(target).next()._outerWidth(width);
-                $(target).next().children().children().removeClass('searchbox-button').addClass('fa fa-ellipsis-h fa-lg').css({"line-height":"30px","margin-top":"0","width":"20px"})
-            }
-        }
-    });*/
 
 
 })
+
+
+
+function add(a, b) {
+    var c, d, e;
+    try {
+        c = a.toString().split(".")[1].length;
+    } catch (f) {
+        c = 0;
+    }
+    try {
+        d = b.toString().split(".")[1].length;
+    } catch (f) {
+        d = 0;
+    }
+    return e = Math.pow(10, Math.max(c, d)), (mul(a, e) + mul(b, e)) / e;
+}
+function sub(a, b) {
+    var c, d, e;
+    try {
+        c = a.toString().split(".")[1].length;
+    } catch (f) {
+        c = 0;
+    }
+    try {
+        d = b.toString().split(".")[1].length;
+    } catch (f) {
+        d = 0;
+    }
+    return e = Math.pow(10, Math.max(c, d)), (mul(a, e) - mul(b, e)) / e;
+}
+function mul(a, b) {
+    var c = 0,
+        d = a.toString(),
+        e = b.toString();
+    try {
+        c += d.split(".")[1].length;
+    } catch (f) {}
+    try {
+        c += e.split(".")[1].length;
+    } catch (f) {}
+    return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
+}
+function div(a, b) {
+    var c, d, e = 0,
+        f = 0;
+    try {
+        e = a.toString().split(".")[1].length;
+    } catch (g) {}
+    try {
+        f = b.toString().split(".")[1].length;
+    } catch (g) {}
+    return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), mul(c / d, Math.pow(10, f - e));
+}
 
 
 
